@@ -6,7 +6,7 @@ fn main() {
         .warnings_into_errors(true)
         .flag("-mcpu=arm7tdmi")
         .out_dir("target")
-        .file("entry.S")
+        .file("src/arch/entry.S")
         .compile("entry.o");
 
     println!("cargo:rerun-if-changed=entry.S");

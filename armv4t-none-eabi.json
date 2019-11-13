@@ -20,7 +20,7 @@
   "linker-flavor": "ld",
   "pre-link-args": {
     "ld": [
-      "-Tlinker.ld"
+      "-Tsrc/arch/linker.ld"
     ]
   },
   "relocation-model": "static",

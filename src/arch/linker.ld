@@ -54,4 +54,8 @@ SECTIONS
     } > IWRAM
 
     /* TODO: Keep/Discard sections */
+    /DISCARD/ :
+    {
+      *(.ARM.exidx*);
+    }
 }

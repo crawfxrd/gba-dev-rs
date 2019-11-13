@@ -23,7 +23,7 @@ _start:
     .byte 0xD6,0x25,0xE4,0x8B,0x38,0x0A,0xAC,0x72,0x21,0xD4,0xF8,0x07
 
     @ Game title; 12 bytes
-    .fill 12, 1, 0
+    .zero 12
 
     @ AGB-UTTD game code; 4 bytes
     .byte 'B'               @ Game type: Normal "newer" game
@@ -34,10 +34,10 @@ _start:
     .byte 0x96              @ Fixed
     .byte 0x00              @ Unit code
     .byte 0x00              @ Device type; 0 for normal catridges
-    .fill 7,1,0             @ Reserved
+    .zero 7                 @ Reserved
     .byte 0x00              @ Game version
     .byte 0x00              @ Header complement check
-    .byte 0x00,0x00         @ Reserved
+    .zero 2                 @ Reserved
 
 .header_end:
     ldr r0, =main

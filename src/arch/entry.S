@@ -40,5 +40,10 @@ _start:
     .zero 2                 @ Reserved
 
 .header_end:
+    @ Enter THUMB state by setting bit 0 in PC.
+    add r0, pc, #1
+    bx r0
+
+    .thumb
     ldr r0, =main
     bx r0

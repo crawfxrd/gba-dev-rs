@@ -18,10 +18,12 @@ file `armv4t-none-eabi.json`.
 cargo xbuild
 ```
 
-To make it a GBA ROM file, convert it from ELF to binary.
+To make it a GBA ROM file, build in release mode and convert the target from
+ELF to binary.
 
 ```
-arm-none-eabi-objcopy -O binary target/armv4t-none-eabi/debug/untitled target/untitled.gba
+cargo xbuild --release
+arm-none-eabi-objcopy -O binary target/armv4t-none-eabi/release/untitled target/untitled.gba
 ```
 
 ## Running

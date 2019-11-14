@@ -40,6 +40,14 @@ _start:
     .zero 2                 @ Reserved
 
 .header_end:
+    b .init
+
+    @ Extended header for multiboot
+    .byte 0x00              @ Boot mode; 0 for normal, 3 for multiboot
+    .byte 0x00              @ Slave ID
+    .zero 26                @ Unused
+
+.init:
     @ Enter THUMB state by setting bit 0 in PC.
     add r0, pc, #1
     bx r0

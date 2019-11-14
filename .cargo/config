@@ -1,5 +1,5 @@
 [target.armv4t-none-eabi]
-runner = "mgba -2"
+runner = "mgba"
 
 [build]
 target = "armv4t-none-eabi"

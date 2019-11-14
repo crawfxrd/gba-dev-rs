@@ -31,7 +31,7 @@ arm-none-eabi-objcopy -O binary target/armv4t-none-eabi/release/untitled target/
 Cargo is configured to run the target with mGBA.
 
 ```
-cargo xrun
+cargo xrun -- -3
 ```
 
 ## License

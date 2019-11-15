@@ -12,6 +12,7 @@
 #![deny(warnings)]
 
 use core::panic::PanicInfo;
+use core::ptr;
 
 struct Color(u16);
 
@@ -30,22 +31,19 @@ const ENABLE_BG2: u16 = 1 << 10;
 
 fn dispcnt(val: u16) {
     unsafe {
-        (0x400_0000 as *mut u16).write_volatile(val);
+        ptr::write_volatile(0x400_0000 as *mut u16, val);
     }
 }
 
 fn draw_pixel(x: u32, y: u32, color: Color) {
     unsafe {
-        (0x600_0000 as *mut u16)
-            .offset((x + y * 240) as isize)
-            .write_volatile(color.0);
+        let addr = (0x600_0000 as *mut u16).offset((x + y * 240) as isize);
+        ptr::write_volatile(addr, color.0);
     }
 }
 
 #[no_mangle]
 pub extern "C" fn main() -> ! {
-    let _x = 42;
-
     dispcnt(MODE3 | ENABLE_BG2);
     draw_pixel(104, 80, RED);
     draw_pixel(120, 80, GREEN);

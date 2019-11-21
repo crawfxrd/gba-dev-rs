@@ -17,14 +17,19 @@ use core::ptr;
 struct Color(u16);
 
 impl Color {
-    pub const fn new(red: u32, green: u32, blue: u32) -> Color {
-        Color(((red & 0x1F) | ((green & 0x1F) << 5) | ((blue & 0x1F) << 10)) as u16)
+    pub const fn new(red: u32, green: u32, blue: u32) -> Self {
+        Self(((red & 0x1F) | ((green & 0x1F) << 5) | ((blue & 0x1F) << 10)) as u16)
     }
 }
 
+const BLACK: Color = Color::new(0, 0, 0);
+const WHITE: Color = Color::new(0x1F, 0x1F, 0x1F);
 const RED: Color = Color::new(0x1F, 0, 0);
 const GREEN: Color = Color::new(0, 0x1F, 0);
 const BLUE: Color = Color::new(0, 0, 0x1F);
+const MAGENTA: Color = Color::new(0x1F, 0, 0x1F);
+const CYAN: Color = Color::new(0, 0x1F, 0x1F);
+const YELLOW: Color = Color::new(0x1F, 0x1F, 0);
 
 const MODE3: u16 = 0x3;
 const ENABLE_BG2: u16 = 1 << 10;
@@ -45,9 +50,9 @@ fn draw_pixel(x: u32, y: u32, color: Color) {
 #[no_mangle]
 pub extern "C" fn main() -> ! {
     dispcnt(MODE3 | ENABLE_BG2);
-    draw_pixel(104, 80, RED);
-    draw_pixel(120, 80, GREEN);
-    draw_pixel(136, 80, BLUE);
+    draw_pixel(104, 80, MAGENTA);
+    draw_pixel(120, 80, CYAN);
+    draw_pixel(136, 80, YELLOW);
 
     loop {}
 }

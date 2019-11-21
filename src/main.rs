@@ -14,6 +14,20 @@
 use core::panic::PanicInfo;
 use core::ptr;
 
+struct Register<T> {
+    address: *mut T,
+}
+
+impl<T> Register<T> {
+    pub fn new(address: u32) -> Self {
+        Self { address: address as *mut T }
+    }
+
+    pub fn write(&self, value: T) {
+        unsafe { ptr::write_volatile(self.address, value); }
+    }
+}
+
 struct Color(u16);
 
 impl Color {
@@ -35,9 +49,7 @@ const MODE3: u16 = 0x3;
 const ENABLE_BG2: u16 = 1 << 10;
 
 fn dispcnt(val: u16) {
-    unsafe {
-        ptr::write_volatile(0x400_0000 as *mut u16, val);
-    }
+    Register::<u16>::new(0x400_0000).write(val);
 }
 
 fn draw_pixel(x: u32, y: u32, color: Color) {

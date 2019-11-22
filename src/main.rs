@@ -14,10 +14,12 @@ mod register;
 
 use core::panic::PanicInfo;
 use core::ptr;
-use register::{ReadWrite, Register};
+use register::{ReadOnly, ReadWrite, Register};
 
 const DISPCNT: Register<u16, ReadWrite> = Register::new(0x0400_0000);
+const VCOUNT: Register<u16, ReadOnly> = Register::new(0x0400_0006);
 
+#[derive(PartialEq)]
 struct Color(u16);
 
 impl Color {
@@ -35,12 +37,19 @@ const MAGENTA: Color = Color::new(0x1F, 0, 0x1F);
 const CYAN: Color = Color::new(0, 0x1F, 0x1F);
 const YELLOW: Color = Color::new(0x1F, 0x1F, 0);
 
+const DISPLAY_WIDTH: u32 = 240;
+const DISPLAY_HEIGHT: u32 = 160;
 const MODE3: u16 = 0x3;
 const ENABLE_BG2: u16 = 1 << 10;
 
-fn draw_pixel(x: u32, y: u32, color: Color) {
+fn vblank() {
+    while VCOUNT.read() >= DISPLAY_HEIGHT as u16 {}
+    while VCOUNT.read() < DISPLAY_HEIGHT as u16 {}
+}
+
+fn draw_pixel(x: u32, y: u32, color: &Color) {
     unsafe {
-        let addr = (0x600_0000 as *mut u16).offset((x + y * 240) as isize);
+        let addr = (0x0600_0000 as *mut u16).offset((x + y * DISPLAY_WIDTH) as isize);
         ptr::write_volatile(addr, color.0);
     }
 }
@@ -48,11 +57,33 @@ fn draw_pixel(x: u32, y: u32, color: Color) {
 #[no_mangle]
 pub extern "C" fn main() -> ! {
     DISPCNT.write(MODE3 | ENABLE_BG2);
-    draw_pixel(104, 80, MAGENTA);
-    draw_pixel(120, 80, CYAN);
-    draw_pixel(136, 80, YELLOW);
 
-    loop {}
+    draw_pixel(104, 80, &MAGENTA);
+    draw_pixel(120, 80, &CYAN);
+    draw_pixel(136, 80, &YELLOW);
+
+    let mut x = 0;
+    let mut y = 0;
+    let mut color = WHITE;
+    loop {
+        vblank();
+
+        draw_pixel(x, y, &color);
+
+        x += 1;
+        if x >= DISPLAY_WIDTH {
+            x = 0;
+            y += 1;
+        }
+        if y >= DISPLAY_HEIGHT {
+            y = 0;
+            color = if color == BLACK {
+                WHITE
+            } else {
+                BLACK
+            };
+        }
+    }
 }
 
 #[panic_handler]

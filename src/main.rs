@@ -5,28 +5,18 @@
  */
 
 #![feature(core_intrinsics)]
-
 #![no_std]
 #![no_main]
 #![allow(dead_code)]
 #![deny(warnings)]
 
+mod register;
+
 use core::panic::PanicInfo;
 use core::ptr;
+use register::{ReadWrite, Register};
 
-struct Register<T> {
-    address: *mut T,
-}
-
-impl<T> Register<T> {
-    pub fn new(address: u32) -> Self {
-        Self { address: address as *mut T }
-    }
-
-    pub fn write(&self, value: T) {
-        unsafe { ptr::write_volatile(self.address, value); }
-    }
-}
+const DISPCNT: Register<u16, ReadWrite> = Register::new(0x0400_0000);
 
 struct Color(u16);
 
@@ -48,10 +38,6 @@ const YELLOW: Color = Color::new(0x1F, 0x1F, 0);
 const MODE3: u16 = 0x3;
 const ENABLE_BG2: u16 = 1 << 10;
 
-fn dispcnt(val: u16) {
-    Register::<u16>::new(0x400_0000).write(val);
-}
-
 fn draw_pixel(x: u32, y: u32, color: Color) {
     unsafe {
         let addr = (0x600_0000 as *mut u16).offset((x + y * 240) as isize);
@@ -61,7 +47,7 @@ fn draw_pixel(x: u32, y: u32, color: Color) {
 
 #[no_mangle]
 pub extern "C" fn main() -> ! {
-    dispcnt(MODE3 | ENABLE_BG2);
+    DISPCNT.write(MODE3 | ENABLE_BG2);
     draw_pixel(104, 80, MAGENTA);
     draw_pixel(120, 80, CYAN);
     draw_pixel(136, 80, YELLOW);

@@ -11,40 +11,40 @@ pub struct ReadOnly;
 pub struct ReadWrite;
 pub struct WriteOnly;
 
-pub struct Register<T, MODE> {
-    address: *mut T,
+pub struct Register<WIDTH, MODE> {
+    address: *mut WIDTH,
     mode: PhantomData<MODE>,
 }
 
-impl<T, MODE> Register<T, MODE> {
+impl<WIDTH, MODE> Register<WIDTH, MODE> {
     pub const fn new(address: u32) -> Self {
         Self {
-            address: address as *mut T,
+            address: address as *mut WIDTH,
             mode: PhantomData,
         }
     }
 }
 
-impl<T> Register<T, ReadOnly> {
-    pub fn read(&self) -> T {
+impl<WIDTH> Register<WIDTH, ReadOnly> {
+    pub fn read(&self) -> WIDTH {
         unsafe { ptr::read_volatile(self.address) }
     }
 }
 
-impl<T> Register<T, WriteOnly> {
-    pub fn write(&self, value: T) {
+impl<WIDTH> Register<WIDTH, WriteOnly> {
+    pub fn write(&self, value: WIDTH) {
         unsafe {
             ptr::write_volatile(self.address, value);
         }
     }
 }
 
-impl<T> Register<T, ReadWrite> {
-    pub fn read(&self) -> T {
+impl<WIDTH> Register<WIDTH, ReadWrite> {
+    pub fn read(&self) -> WIDTH {
         unsafe { ptr::read_volatile(self.address) }
     }
 
-    pub fn write(&self, value: T) {
+    pub fn write(&self, value: WIDTH) {
         unsafe {
             ptr::write_volatile(self.address, value);
         }

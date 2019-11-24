@@ -48,10 +48,7 @@ _start:
     .zero 26                @ Unused
 
 .init:
-    @ Enter THUMB state by setting bit 0 in PC.
-    add r0, pc, #1
-    bx r0
-
-    .thumb
+    @ The linker knows that main() is Thumb code and will automatically switch
+    @ the CPU to THUMB state when branching.
     ldr r0, =main
     bx r0

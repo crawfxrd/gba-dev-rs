@@ -13,11 +13,11 @@
   "env": "",
   "executables": true,
   "features": "+soft-float,+strict-align",
+  "linker": "arm-none-eabi-ld",
+  "linker-flavor": "ld",
   "llvm-target": "thumbv4-none-eabi",
   "os": "none",
   "panic-strategy": "abort",
-  "linker": "arm-none-eabi-ld",
-  "linker-flavor": "ld",
   "pre-link-args": {
     "ld": [
       "-Tsrc/arch/linker.ld"

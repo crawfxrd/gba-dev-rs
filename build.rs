@@ -8,6 +8,4 @@ fn main() {
         .out_dir("target")
         .file("src/arch/entry.S")
         .compile("entry.o");
-
-    println!("cargo:rerun-if-changed=src/arch/entry.S");
 }

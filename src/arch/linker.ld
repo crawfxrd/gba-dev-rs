@@ -32,7 +32,7 @@ MEMORY
 
 SECTIONS
 {
-    .text ORIGIN(ROM) : ALIGN(4)
+    .text : ALIGN(4)
     {
         KEEP(*(.text.entry));
         *(.text .text.*);

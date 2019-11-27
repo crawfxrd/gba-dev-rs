@@ -8,7 +8,7 @@
 
     .global _start
 _start:
-    b .header_end
+    b .init
 
     @ Nintendo logo; 156 bytes
     .byte 0x24,0xFF,0xAE,0x51,0x69,0x9A,0xA2,0x21,0x3D,0x84,0x82,0x0A,0x84,0xE4,0x09,0xAD
@@ -36,18 +36,13 @@ _start:
     .byte 0x00              @ Device type; 0 for normal catridges
     .zero 7                 @ Reserved
     .byte 0x00              @ Game version
-    .byte 0x00              @ Header complement check
+    .byte 0x00              @ Header complement check; TODO: calculate checksum
     .zero 2                 @ Reserved
 
-.header_end:
-    b .init
-
-    @ Extended header for multiboot
-    .byte 0x00              @ Boot mode; 0 for normal, 3 for multiboot
-    .byte 0x00              @ Slave ID
-    .zero 26                @ Unused
-
 .init:
+    @ TODO: Set up stack?
+    @ TODO: Set up master interrupt handler at 0x0300_7FFC
+
     @ The linker knows that main() is Thumb code and will automatically switch
     @ the CPU to THUMB state when branching.
     ldr r0, =main

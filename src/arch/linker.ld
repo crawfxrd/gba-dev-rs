@@ -34,28 +34,28 @@ SECTIONS
 {
     .text : ALIGN(4)
     {
-        KEEP(*(.text.entry));
-        *(.text .text.*);
+        KEEP(*(.text.entry))
+        *(.text .text.*)
     } > ROM
 
     .rodata : ALIGN(4)
     {
-        *(.rodata .rodata.*);
+        *(.rodata .rodata.*)
     } > ROM
 
     .data : ALIGN(4)
     {
-        *(.data .data.*);
-    } > IWRAM
+        *(.data .data.*)
+    } > IWRAM AT > ROM
 
     .bss : ALIGN(4)
     {
-        *(.bss);
+        *(.bss)
     } > IWRAM
 
     /* TODO: Keep/Discard sections */
     /DISCARD/ :
     {
-      *(.ARM.exidx*);
+      *(.ARM.exidx*)
     }
 }

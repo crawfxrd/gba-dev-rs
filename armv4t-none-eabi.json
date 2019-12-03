@@ -20,7 +20,7 @@
   "panic-strategy": "abort",
   "pre-link-args": {
     "ld": [
-      "-Tsrc/arch/linker.ld"
+      "-Tsrc/linker.ld"
     ]
   },
   "relocation-model": "static",

@@ -4,6 +4,7 @@
  * Copyright (c) 2019 Tim Crawford <crawfxrd@gmail.com>
  */
 
+#![feature(asm)]
 #![feature(core_intrinsics)]
 #![no_std]
 #![no_main]
@@ -17,7 +18,11 @@ use core::ptr;
 use register::{ReadOnly, ReadWrite, Register};
 
 const DISPCNT: Register<u16, ReadWrite> = Register::new(0x0400_0000);
+const DISPSTAT: Register<u16, ReadWrite> = Register::new(0x0400_0004);
 const VCOUNT: Register<u16, ReadOnly> = Register::new(0x0400_0006);
+
+const IE: Register<u16, ReadWrite> = Register::new(0x0400_0200);
+const IME: Register<u16, ReadWrite> = Register::new(0x0400_0208);
 
 #[derive(PartialEq)]
 struct Color(u16);
@@ -42,9 +47,10 @@ const DISPLAY_HEIGHT: u32 = 160;
 const MODE3: u16 = 0x3;
 const ENABLE_BG2: u16 = 1 << 10;
 
-fn vblank() {
-    while VCOUNT.read() >= DISPLAY_HEIGHT as u16 {}
-    while VCOUNT.read() < DISPLAY_HEIGHT as u16 {}
+fn vsync() {
+    unsafe {
+        asm!("svc 0x05" ::: "r0", "r1");
+    }
 }
 
 fn draw_pixel(x: u32, y: u32, color: &Color) {
@@ -62,11 +68,16 @@ pub extern "C" fn main() -> ! {
     draw_pixel(120, 80, &CYAN);
     draw_pixel(136, 80, &YELLOW);
 
+    // Enable VBLANK interrupt
+    DISPSTAT.write(DISPSTAT.read() | (1 << 3));
+    IE.write(1);
+    IME.write(1);
+
     let mut x = 0;
     let mut y = 0;
     let mut color = WHITE;
     loop {
-        vblank();
+        vsync();
 
         draw_pixel(x, y, &color);
 

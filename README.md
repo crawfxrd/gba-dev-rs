@@ -28,7 +28,9 @@ arm-none-eabi-objcopy -O binary target/armv4t-none-eabi/release/untitled target/
 
 ## Running
 
-Cargo is configured to run the target with mGBA.
+Cargo is configured to run the target with mGBA, and assumes the binary is
+called `mgba`. If the mGBA binary uses a different name (e.g., `mgba-sdl`,
+`mgba-qt`), modify the `runner` value in `.cargo/config`.
 
 ```
 cargo xrun -- -3
@@ -37,10 +39,10 @@ cargo xrun -- -3
 ## License
 
 This software is made available under the terms of the Mozilla Public License,
-version 2.0.
+version 2.0. See [LICENSE](./Licenses/MPL-2.0.txt) for details.
 
 [Rust]: https://www.rust-lang.org/
+[cargo-config]: https://doc.rust-lang.org/cargo/reference/config.html
 [cargo-xbuild]: https://github.com/rust-osdev/cargo-xbuild
 [devkitARM]: https://devkitpro.org/wiki/Getting_Started
 [mGBA]: https://mgba.io/
-[cargo-config]: https://doc.rust-lang.org/cargo/reference/config.html

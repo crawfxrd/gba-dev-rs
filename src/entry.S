@@ -1,6 +1,9 @@
 @ SPDX-License-Identifier: CC0-1.0
 @
-@ https://problemkaputt.de/gbatek.htm#gbacartridgeheader
+@ GBA Cartridge Header
+@ Entry point for GBA games.
+@
+@ Ref: https://problemkaputt.de/gbatek.htm#gbacartridgeheader
 
     .section .text.entry
     .arm
@@ -42,7 +45,6 @@ _start:
 .init:
     @ TODO: Set up stack?
 
-    @ The linker knows that main() is Thumb code and will automatically switch
-    @ the CPU to THUMB state when branching.
+    @ Branch to main(), switching to THUMB state.
     ldr r0, =main
     bx r0

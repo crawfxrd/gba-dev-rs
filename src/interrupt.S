@@ -1,4 +1,8 @@
 @ SPDX-License-Identifier: CC0-1.0
+@
+@ Master interrupt handler
+@
+@ Ref: https://problemkaputt.de/gbatek.htm#gbainterruptcontrol
 
 #define REG_IF          0x03007FF8
 #define REG_BIOS_IF     0x04000202

@@ -17,6 +17,13 @@ use core::panic::PanicInfo;
 use core::ptr;
 use register::{ReadOnly, ReadWrite, Register};
 
+type IrqHandler = unsafe extern "C" fn();
+const IRQ_HANDLER: Register<IrqHandler, ReadWrite> = Register::new(0x0300_7FFC);
+
+extern "C" {
+    pub fn master_isr();
+}
+
 const DISPCNT: Register<u16, ReadWrite> = Register::new(0x0400_0000);
 const DISPSTAT: Register<u16, ReadWrite> = Register::new(0x0400_0004);
 const VCOUNT: Register<u16, ReadOnly> = Register::new(0x0400_0006);
@@ -68,6 +75,8 @@ pub extern "C" fn main() -> ! {
     draw_pixel(120, 80, &CYAN);
     draw_pixel(136, 80, &YELLOW);
 
+    IRQ_HANDLER.write(master_isr);
+
     // Enable VBLANK interrupt
     DISPSTAT.write(DISPSTAT.read() | (1 << 3));
     IE.write(1);
@@ -88,11 +97,7 @@ pub extern "C" fn main() -> ! {
         }
         if y >= DISPLAY_HEIGHT {
             y = 0;
-            color = if color == BLACK {
-                WHITE
-            } else {
-                BLACK
-            };
+            color = if color == BLACK { WHITE } else { BLACK };
         }
     }
 }

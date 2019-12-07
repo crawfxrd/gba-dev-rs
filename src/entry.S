@@ -42,28 +42,7 @@ _start:
 .init:
     @ TODO: Set up stack?
 
-    @ Set up master interrupt handler at 0x0300_7FFC
-    ldr r0, =master_isr
-    ldr r1, =0x03007FFC
-    str r0, [r1]
-
     @ The linker knows that main() is Thumb code and will automatically switch
     @ the CPU to THUMB state when branching.
     ldr r0, =main
     bx r0
-
-    .global master_isr
-master_isr:
-    @ Acknowledge VBLANK interrupt
-    @ IF = 1
-    mov r0, #1
-    ldr r1, =0x03007FF8
-    str r0, [r1]
-
-    @ BIOS_IF |= 1
-    ldr r1, =0x04000202
-    ldr r0, [r1]
-    orr r0, #1
-    str r0, [r1]
-
-    bx lr

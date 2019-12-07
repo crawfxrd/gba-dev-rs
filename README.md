@@ -33,7 +33,27 @@ called `mgba`. If the mGBA binary uses a different name (e.g., `mgba-sdl`,
 `mgba-qt`), modify the `runner` value in `.cargo/config`.
 
 ```
-cargo xrun -- -3
+cargo xrun --release -- -3
+```
+
+### Debugging
+
+Run a debug build with a GDB session. mGBA will wait for a connection on the
+localhost port 2345.
+
+```
+cargo xrun -- -g
+```
+
+In another window, attach to the session. The file [`.gdbinit`][gdbinit]
+specifies the binary to load debug symbols from and the remote target. GDB must
+be configured to allow loading this file (`local-gdbinit`, `safe-path`).
+
+```
+gdb -q -iex "set auto-load safe-path ."
+0x00000000 in ?? ()
+(gdb) c
+Continuing.
 ```
 
 ## License
@@ -45,4 +65,5 @@ version 2.0. See [LICENSE](./Licenses/MPL-2.0.txt) for details.
 [cargo-config]: https://doc.rust-lang.org/cargo/reference/config.html
 [cargo-xbuild]: https://github.com/rust-osdev/cargo-xbuild
 [devkitARM]: https://devkitpro.org/wiki/Getting_Started
+[gdbinit]: https://sourceware.org/gdb/onlinedocs/gdb/gdbinit-man.html
 [mGBA]: https://mgba.io/

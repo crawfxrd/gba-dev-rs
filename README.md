@@ -29,8 +29,8 @@ arm-none-eabi-objcopy -O binary target/armv4t-none-eabi/release/untitled target/
 ## Running
 
 Cargo is configured to run the target with mGBA, and assumes the binary is
-called `mgba`. If the mGBA binary uses a different name (e.g., `mgba-sdl`,
-`mgba-qt`), modify the `runner` value in `.cargo/config`.
+called `mgba-qt`. If the mGBA binary uses a different name (e.g., `mgba`,
+`mgba-sdl`), modify the `runner` value in `.cargo/config`.
 
 ```
 cargo xrun --release -- -3

@@ -11,10 +11,12 @@
 #![allow(dead_code)]
 #![deny(warnings)]
 
+mod input;
 mod register;
 
 use core::panic::PanicInfo;
 use core::ptr;
+use input::{Input, Key};
 use register::{ReadOnly, ReadWrite, Register};
 
 type IrqHandler = unsafe extern "C" fn();
@@ -30,61 +32,6 @@ const VCOUNT: Register<u16, ReadOnly> = Register::new(0x0400_0006);
 
 const IE: Register<u16, ReadWrite> = Register::new(0x0400_0200);
 const IME: Register<u16, ReadWrite> = Register::new(0x0400_0208);
-
-const KEYINPUT: Register<u16, ReadOnly> = Register::new(0x0400_0130);
-const KEY_A: u16 = 1 << 0;
-const KEY_B: u16 = 1 << 1;
-const KEY_SELECT: u16 = 1 << 2;
-const KEY_START: u16 = 1 << 3;
-const KEY_RIGHT: u16 = 1 << 4;
-const KEY_LEFT: u16 = 1 << 5;
-const KEY_UP: u16 = 1 << 6;
-const KEY_DOWN: u16 = 1 << 7;
-const KEY_R: u16 = 1 << 8;
-const KEY_L: u16 = 1 << 9;
-const KEY_MASK: u16 = 0b0000_0011_1111_1111;
-
-static mut INPUT_PREV: u16 = 0;
-static mut INPUT_CURRENT: u16 = 0;
-
-fn key_current_state() -> u16 {
-    unsafe { INPUT_CURRENT }
-}
-
-fn key_prev_state() -> u16 {
-    unsafe { INPUT_PREV }
-}
-
-fn key_poll() {
-    unsafe {
-        INPUT_PREV = INPUT_CURRENT;
-        INPUT_CURRENT = !KEYINPUT.read() & KEY_MASK;
-    }
-}
-
-fn key_is_down(key: u16) -> bool {
-    (key_current_state() & key) != 0
-}
-
-fn key_is_up(key: u16) -> bool {
-    (!key_current_state() & key) != 0
-}
-
-fn key_was_down(key: u16) -> bool {
-    (key_prev_state() & key) != 0
-}
-
-fn key_was_up(key: u16) -> bool {
-    (!key_prev_state() & key) != 0
-}
-
-fn key_down(key: u16) -> bool {
-    key_was_up(key) && key_is_down(key)
-}
-
-fn key_up(key: u16) -> bool {
-    key_was_down(key) && key_is_up(key)
-}
 
 #[derive(PartialEq)]
 struct Color(u16);
@@ -139,32 +86,34 @@ pub extern "C" fn main() -> ! {
     IE.write(1);
     IME.write(1);
 
+    let mut input = Input::new();
+
     let mut x = 0;
     let mut y = 0;
     let mut color = WHITE;
     loop {
         vsync();
-        key_poll();
+        input.poll();
 
-        if key_down(KEY_A) {
+        if input.key_down(Key::A) {
             color = CYAN;
-        } else if key_down(KEY_B) {
+        } else if input.key_down(Key::B) {
             color = YELLOW;
-        } else if key_down(KEY_START) {
+        } else if input.key_down(Key::Start) {
             color = WHITE;
-        } else if key_down(KEY_SELECT) {
+        } else if input.key_down(Key::Select) {
             color = BLACK;
-        } else if key_down(KEY_RIGHT) {
+        } else if input.key_down(Key::Right) {
             color = RED;
-        } else if key_down(KEY_LEFT) {
+        } else if input.key_down(Key::Left) {
             color = GREEN;
-        } else if key_down(KEY_UP) {
+        } else if input.key_down(Key::Up) {
             color = BLUE;
-        } else if key_down(KEY_DOWN) {
+        } else if input.key_down(Key::Down) {
             color = MAGENTA;
-        } else if key_down(KEY_R) {
+        } else if input.key_down(Key::R) {
             color = LIGHT_GRAY;
-        } else if key_down(KEY_L) {
+        } else if input.key_down(Key::L) {
             color = GRAY;
         }
 

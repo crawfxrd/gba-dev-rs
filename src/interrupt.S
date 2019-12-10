@@ -4,8 +4,8 @@
 @
 @ Ref: https://problemkaputt.de/gbatek.htm#gbainterruptcontrol
 
-#define REG_IF          0x03007FF8
-#define REG_BIOS_IF     0x04000202
+#define REG_BIOS_IF     0x03007FF8
+#define REG_IF          0x04000202
 
     .section .text
     .arm
@@ -16,15 +16,15 @@
 master_isr:
     @ Acknowledge VBLANK interrupt
     @ IF = 1
-    mov r0, #1
-    ldr r1, =REG_IF
-    str r0, [r1]
+    mov r1, #1
+    ldr r2, =REG_IF
+    strh r1, [r2]
 
     @ BIOS_IF |= 1
-    ldr r1, =REG_BIOS_IF
-    ldr r0, [r1]
-    orr r0, #1
-    str r0, [r1]
+    ldr r3, =REG_BIOS_IF
+    ldrh r1, [r3]
+    orr r1, r1, #1
+    strh r1, [r3]
 
     bx lr
     .endfunc

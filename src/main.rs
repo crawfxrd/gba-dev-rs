@@ -6,8 +6,10 @@
 
 #![feature(asm)]
 #![feature(core_intrinsics)]
+
 #![no_std]
 #![no_main]
+
 #![allow(dead_code)]
 #![deny(warnings)]
 
@@ -72,7 +74,7 @@ fn draw_pixel(x: u32, y: u32, color: &Color) {
 }
 
 #[no_mangle]
-pub extern "C" fn main() -> ! {
+pub unsafe extern "C" fn main() -> ! {
     DISPCNT.write(MODE3 | ENABLE_BG2);
 
     draw_pixel(104, 80, &MAGENTA);

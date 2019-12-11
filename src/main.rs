@@ -35,7 +35,7 @@ const VCOUNT: Register<u16, ReadOnly> = Register::new(0x0400_0006);
 const IE: Register<u16, ReadWrite> = Register::new(0x0400_0200);
 const IME: Register<u16, ReadWrite> = Register::new(0x0400_0208);
 
-#[derive(PartialEq)]
+#[derive(Clone, Copy, PartialEq)]
 struct Color(u16);
 
 impl Color {
@@ -54,6 +54,7 @@ const BLUE: Color = Color::new(0, 0, 0x1F);
 const MAGENTA: Color = Color::new(0x1F, 0, 0x1F);
 const CYAN: Color = Color::new(0, 0x1F, 0x1F);
 const YELLOW: Color = Color::new(0x1F, 0x1F, 0);
+const LIGHT_STEEL_BLUE: Color = Color::new(0x16, 0x18, 0x1B);
 
 const DISPLAY_WIDTH: u32 = 240;
 const DISPLAY_HEIGHT: u32 = 160;
@@ -66,7 +67,7 @@ fn vsync() {
     }
 }
 
-fn draw_pixel(x: u32, y: u32, color: &Color) {
+fn draw_pixel(x: u32, y: u32, color: Color) {
     unsafe {
         let addr = (0x0600_0000 as *mut u16).offset((x + y * DISPLAY_WIDTH) as isize);
         ptr::write_volatile(addr, color.0);
@@ -77,10 +78,6 @@ fn draw_pixel(x: u32, y: u32, color: &Color) {
 pub unsafe extern "C" fn main() -> ! {
     DISPCNT.write(MODE3 | ENABLE_BG2);
 
-    draw_pixel(104, 80, &MAGENTA);
-    draw_pixel(120, 80, &CYAN);
-    draw_pixel(136, 80, &YELLOW);
-
     IRQ_HANDLER.write(master_isr);
 
     // Enable VBLANK interrupt
@@ -90,45 +87,53 @@ pub unsafe extern "C" fn main() -> ! {
 
     let mut input = Input::new();
 
-    let mut x = 0;
-    let mut y = 0;
-    let mut color = WHITE;
+    let mut x = DISPLAY_WIDTH >> 1;
+    let mut y = DISPLAY_HEIGHT >> 1;
+    let mut color = CYAN;
     loop {
         vsync();
         input.poll();
+
+        draw_pixel(x, y, BLACK);
+
+        if input.key_is_down(Key::Right) {
+            if x < DISPLAY_WIDTH - 1 {
+                x += 1;
+            }
+        }
+        if input.key_is_down(Key::Left) {
+            if x > 0 {
+                x -= 1;
+            }
+        }
+
+        if input.key_is_down(Key::Up) {
+            if y > 0 {
+                y -= 1;
+            }
+        }
+        if input.key_is_down(Key::Down) {
+            if y < DISPLAY_HEIGHT - 1 {
+                y += 1;
+            }
+        }
+
+        if input.key_down(Key::Start) {
+            x = DISPLAY_WIDTH >> 1;
+            y = DISPLAY_HEIGHT >> 1;
+        }
 
         if input.key_down(Key::A) {
             color = CYAN;
         } else if input.key_down(Key::B) {
             color = YELLOW;
-        } else if input.key_down(Key::Start) {
-            color = WHITE;
-        } else if input.key_down(Key::Select) {
-            color = BLACK;
-        } else if input.key_down(Key::Right) {
-            color = RED;
-        } else if input.key_down(Key::Left) {
-            color = GREEN;
-        } else if input.key_down(Key::Up) {
-            color = BLUE;
-        } else if input.key_down(Key::Down) {
-            color = MAGENTA;
         } else if input.key_down(Key::R) {
-            color = LIGHT_GRAY;
+            color = MAGENTA;
         } else if input.key_down(Key::L) {
-            color = GRAY;
+            color = LIGHT_STEEL_BLUE;
         }
 
-        draw_pixel(x, y, &color);
-
-        x += 1;
-        if x >= DISPLAY_WIDTH {
-            x = 0;
-            y += 1;
-        }
-        if y >= DISPLAY_HEIGHT {
-            y = 0;
-        }
+        draw_pixel(x, y, color);
     }
 }
 

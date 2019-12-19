@@ -18,11 +18,6 @@
   "llvm-target": "thumbv4-none-eabi",
   "os": "none",
   "panic-strategy": "abort",
-  "pre-link-args": {
-    "ld": [
-      "-Tsrc/linker.ld"
-    ]
-  },
   "relocation-model": "static",
   "target-c-int-width": "32",
   "target-endian": "little",

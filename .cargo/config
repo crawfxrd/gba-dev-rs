@@ -1,5 +1,8 @@
 [target.armv4t-none-eabi]
 runner = "mgba-qt"
+rustflags = [
+    "-C", "link-arg=-Tsrc/linker.ld",
+]
 
 [build]
 target = "armv4t-none-eabi"

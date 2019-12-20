@@ -14,6 +14,7 @@
 #![deny(warnings)]
 
 mod input;
+mod mgba;
 mod register;
 
 use core::panic::PanicInfo;
@@ -76,6 +77,12 @@ fn draw_pixel(x: u32, y: u32, color: Color) {
 
 #[no_mangle]
 pub unsafe extern "C" fn main() -> ! {
+    if !mgba::enable() {
+        panic!();
+    }
+
+    mgba::log("test");
+
     DISPCNT.write(MODE3 | ENABLE_BG2);
 
     IRQ_HANDLER.write(master_isr);

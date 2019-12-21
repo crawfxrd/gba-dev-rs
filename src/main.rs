@@ -14,27 +14,17 @@
 #![deny(warnings)]
 
 mod input;
+mod interrupt;
 mod mgba;
 mod register;
 
 use core::panic::PanicInfo;
 use core::ptr;
 use input::{Input, Key};
-use register::{ReadOnly, ReadWrite, Register};
-
-type IrqHandler = unsafe extern "C" fn();
-const IRQ_HANDLER: Register<IrqHandler, ReadWrite> = Register::new(0x0300_7FFC);
-
-extern "C" {
-    fn master_isr();
-}
+use interrupt::Irq;
+use register::{ReadWrite, Register};
 
 const DISPCNT: Register<u16, ReadWrite> = Register::new(0x0400_0000);
-const DISPSTAT: Register<u16, ReadWrite> = Register::new(0x0400_0004);
-const VCOUNT: Register<u16, ReadOnly> = Register::new(0x0400_0006);
-
-const IE: Register<u16, ReadWrite> = Register::new(0x0400_0200);
-const IME: Register<u16, ReadWrite> = Register::new(0x0400_0208);
 
 #[derive(Clone, Copy, PartialEq)]
 struct Color(u16);
@@ -77,20 +67,14 @@ fn draw_pixel(x: u32, y: u32, color: Color) {
 
 #[no_mangle]
 pub unsafe extern "C" fn main() -> ! {
-    if !mgba::enable() {
-        panic!();
+    extern "C" {
+        fn master_isr();
     }
 
-    mgba::log("test");
+    interrupt::init(master_isr);
+    interrupt::enable(Irq::VBlank);
 
     DISPCNT.write(MODE3 | ENABLE_BG2);
-
-    IRQ_HANDLER.write(master_isr);
-
-    // Enable VBLANK interrupt
-    DISPSTAT.write(DISPSTAT.read() | (1 << 3));
-    IE.write(1);
-    IME.write(1);
 
     let mut input = Input::new();
 

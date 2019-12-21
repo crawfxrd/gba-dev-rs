@@ -1,3 +1,9 @@
+// SPDX-License-Identifier: MPL-2.0
+
+/*
+ * Copyright (c) 2019 Tim Crawford <crawfxrd@gmail.com>
+ */
+
 use crate::register::{ReadWrite, Register, WriteOnly};
 
 const MGBA_DEBUG_FLAGS: Register<u16, WriteOnly> = Register::new(0x04FF_F700);

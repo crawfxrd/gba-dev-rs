@@ -47,8 +47,6 @@ const CYAN: Color = Color::new(0, 0x1F, 0x1F);
 const YELLOW: Color = Color::new(0x1F, 0x1F, 0);
 const LIGHT_STEEL_BLUE: Color = Color::new(0x16, 0x18, 0x1B);
 
-const DISPLAY_WIDTH: u32 = 240;
-const DISPLAY_HEIGHT: u32 = 160;
 const MODE3: u16 = 0x3;
 const ENABLE_BG2: u16 = 1 << 10;
 
@@ -58,10 +56,17 @@ fn vsync() {
     }
 }
 
-fn draw_pixel(x: u32, y: u32, color: Color) {
-    unsafe {
-        let addr = (0x0600_0000 as *mut u16).offset((x + y * DISPLAY_WIDTH) as isize);
-        ptr::write_volatile(addr, color.0);
+struct Mode3;
+
+impl Mode3 {
+    const WIDTH: u32 = 240;
+    const HEIGHT: u32 = 160;
+
+    pub fn draw_pixel(x: u32, y: u32, color: Color) {
+        unsafe {
+            let addr = (0x0600_0000 as *mut u16).offset((x + y * Self::WIDTH) as isize);
+            ptr::write_volatile(addr, color.0);
+        }
     }
 }
 
@@ -78,17 +83,17 @@ pub unsafe extern "C" fn main() -> ! {
 
     let mut input = Input::new();
 
-    let mut x = DISPLAY_WIDTH >> 1;
-    let mut y = DISPLAY_HEIGHT >> 1;
+    let mut x = Mode3::WIDTH >> 1;
+    let mut y = Mode3::HEIGHT >> 1;
     let mut color = CYAN;
     loop {
         vsync();
         input.poll();
 
-        draw_pixel(x, y, BLACK);
+        Mode3::draw_pixel(x, y, BLACK);
 
         if input.key_is_down(Key::Right) {
-            if x < DISPLAY_WIDTH - 1 {
+            if x < Mode3::WIDTH - 1 {
                 x += 1;
             }
         }
@@ -104,14 +109,14 @@ pub unsafe extern "C" fn main() -> ! {
             }
         }
         if input.key_is_down(Key::Down) {
-            if y < DISPLAY_HEIGHT - 1 {
+            if y < Mode3::HEIGHT - 1 {
                 y += 1;
             }
         }
 
         if input.key_down(Key::Start) {
-            x = DISPLAY_WIDTH >> 1;
-            y = DISPLAY_HEIGHT >> 1;
+            x = Mode3::WIDTH >> 1;
+            y = Mode3::HEIGHT >> 1;
         }
 
         if input.key_down(Key::A) {
@@ -124,7 +129,7 @@ pub unsafe extern "C" fn main() -> ! {
             color = LIGHT_STEEL_BLUE;
         }
 
-        draw_pixel(x, y, color);
+        Mode3::draw_pixel(x, y, color);
     }
 }
 

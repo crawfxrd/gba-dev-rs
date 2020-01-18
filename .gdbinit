@@ -1,2 +1,2 @@
-file ./target/armv4t-none-eabi/debug/untitled
+file ./target/thumbv4-none-eabi/debug/untitled
 target remote :2345

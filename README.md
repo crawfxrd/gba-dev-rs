@@ -12,7 +12,7 @@ Embedded Rust development targeting the Nintendo Game Boy Advance.
 ## Building
 
 Cargo is [configured][cargo-config] to run with the provided ARM7TDMI target
-file `armv4t-none-eabi.json`.
+file `thumbv4-none-eabi.json`.
 
 ```
 cargo xbuild
@@ -23,7 +23,7 @@ ELF to binary.
 
 ```
 cargo xbuild --release
-arm-none-eabi-objcopy -O binary target/armv4t-none-eabi/release/untitled target/untitled.gba
+arm-none-eabi-objcopy -O binary target/thumbv4-none-eabi/release/untitled target/untitled.gba
 ```
 
 ## Running

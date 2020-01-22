@@ -69,6 +69,61 @@ impl Mode3 {
     }
 }
 
+struct Pixel {
+    x: u32,
+    y: u32,
+    color: Color,
+}
+
+impl Pixel {
+    fn new(x: u32, y: u32, color: Color) -> Self {
+        Self { x, y, color }
+    }
+
+    fn render(&self) {
+        Mode3::draw_pixel(self.x, self.y, self.color);
+    }
+
+    fn update(&mut self, input: &Input) {
+        if input.key_is_down(Key::Right) {
+            if self.x < Mode3::WIDTH - 1 {
+                self.x += 1;
+            }
+        }
+        if input.key_is_down(Key::Left) {
+            if self.x > 0 {
+                self.x -= 1;
+            }
+        }
+
+        if input.key_is_down(Key::Up) {
+            if self.y > 0 {
+                self.y -= 1;
+            }
+        }
+        if input.key_is_down(Key::Down) {
+            if self.y < Mode3::HEIGHT - 1 {
+                self.y += 1;
+            }
+        }
+
+        if input.key_down(Key::Start) {
+            self.x = Mode3::WIDTH >> 1;
+            self.y = Mode3::HEIGHT >> 1;
+        }
+
+        if input.key_down(Key::A) {
+            self.color = CYAN;
+        } else if input.key_down(Key::B) {
+            self.color = YELLOW;
+        } else if input.key_down(Key::R) {
+            self.color = MAGENTA;
+        } else if input.key_down(Key::L) {
+            self.color = LIGHT_STEEL_BLUE;
+        }
+    }
+}
+
 #[no_mangle]
 pub unsafe extern "C" fn main() -> ! {
     extern "C" {
@@ -81,54 +136,18 @@ pub unsafe extern "C" fn main() -> ! {
     DISPCNT.write(MODE3 | ENABLE_BG2);
 
     let mut input = Input::new();
+    let mut pxl = Pixel::new(Mode3::WIDTH >> 1, Mode3::HEIGHT >> 1, CYAN);
 
-    let mut x = Mode3::WIDTH >> 1;
-    let mut y = Mode3::HEIGHT >> 1;
-    let mut color = CYAN;
     loop {
         vsync();
         input.poll();
 
-        Mode3::draw_pixel(x, y, BLACK);
+        // XXX: Background not redrawn on new frame. Fill current pixel with
+        // background color to not "streak" when moving.
+        Mode3::draw_pixel(pxl.x, pxl.y, BLACK);
 
-        if input.key_is_down(Key::Right) {
-            if x < Mode3::WIDTH - 1 {
-                x += 1;
-            }
-        }
-        if input.key_is_down(Key::Left) {
-            if x > 0 {
-                x -= 1;
-            }
-        }
-
-        if input.key_is_down(Key::Up) {
-            if y > 0 {
-                y -= 1;
-            }
-        }
-        if input.key_is_down(Key::Down) {
-            if y < Mode3::HEIGHT - 1 {
-                y += 1;
-            }
-        }
-
-        if input.key_down(Key::Start) {
-            x = Mode3::WIDTH >> 1;
-            y = Mode3::HEIGHT >> 1;
-        }
-
-        if input.key_down(Key::A) {
-            color = CYAN;
-        } else if input.key_down(Key::B) {
-            color = YELLOW;
-        } else if input.key_down(Key::R) {
-            color = MAGENTA;
-        } else if input.key_down(Key::L) {
-            color = LIGHT_STEEL_BLUE;
-        }
-
-        Mode3::draw_pixel(x, y, color);
+        pxl.update(&input);
+        pxl.render();
     }
 }
 

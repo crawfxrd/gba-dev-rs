@@ -6,19 +6,18 @@
 
 #![feature(asm)]
 #![feature(core_intrinsics)]
-
 #![no_std]
 #![no_main]
-
-#![allow(dead_code)]
 #![deny(warnings)]
+#![allow(dead_code)]
+#![allow(clippy::collapsible_if)]
+#![allow(clippy::missing_safety_doc)]
 
 mod input;
 mod interrupt;
 mod mgba;
 mod register;
 
-use core::panic::PanicInfo;
 use core::ptr;
 use input::{Input, Key};
 use interrupt::Irq;
@@ -134,6 +133,6 @@ pub unsafe extern "C" fn main() -> ! {
 }
 
 #[panic_handler]
-fn panic(_info: &PanicInfo) -> ! {
+fn panic(_info: &core::panic::PanicInfo) -> ! {
     unsafe { core::intrinsics::abort() }
 }

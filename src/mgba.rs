@@ -15,7 +15,7 @@ pub fn enable() -> bool {
 }
 
 pub fn log(msg: &str) {
-    let mut mgba_str = 0x04FF_F600  as *mut u8;
+    let mut mgba_str = 0x04FF_F600 as *mut u8;
     for &b in msg.as_bytes().iter() {
         unsafe {
             mgba_str.write(b);

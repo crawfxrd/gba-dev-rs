@@ -15,19 +15,19 @@ pub type IrqHandler = unsafe extern "C" fn();
 
 pub enum Irq {
     VBlank,
-    HBlank,
-    VCount,
-    Timer0,
-    Timer1,
-    Timer2,
-    Timer3,
-    Serial,
-    DMA1,
-    DMA2,
-    DMA3,
-    DMA4,
-    Keypad,
-    GamePak,
+    //HBlank,
+    //VCount,
+    //Timer0,
+    //Timer1,
+    //Timer2,
+    //Timer3,
+    //Serial,
+    //DMA1,
+    //DMA2,
+    //DMA3,
+    //DMA4,
+    //Keypad,
+    //GamePak,
 }
 
 pub fn init(isr: IrqHandler) {
@@ -42,9 +42,8 @@ pub fn enable(irq: Irq) {
     match irq {
         Irq::VBlank => {
             DISPSTAT.write(DISPSTAT.read() | (1 << 3));
-            IE.write(1 << 0);
+            IE.write(1);
         }
-        _ => (),
     }
 
     IME.write(ime);

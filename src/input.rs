@@ -6,6 +6,7 @@
 
 use crate::register::{ReadOnly, Register};
 
+#[allow(clippy::identity_op)]
 #[derive(Clone, Copy)]
 pub enum Key {
     A = 1 << 0,
@@ -30,7 +31,10 @@ impl Input {
     const KEY_MASK: u16 = 0b0000_0011_1111_1111;
 
     pub const fn new() -> Self {
-        Self { previous: 0, current: 0 }
+        Self {
+            previous: 0,
+            current: 0,
+        }
     }
 
     pub fn poll(&mut self) {
@@ -62,4 +66,3 @@ impl Input {
         self.key_was_down(key) && self.key_is_up(key)
     }
 }
-

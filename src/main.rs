@@ -48,12 +48,17 @@ const YELLOW: Color = Color::new(0x1F, 0x1F, 0);
 const LIGHT_STEEL_BLUE: Color = Color::new(0x16, 0x18, 0x1B);
 
 const MODE4: u16 = 0x4;
+const SELECT_FRAME: u16 = 1 << 4;
 const ENABLE_BG2: u16 = 1 << 10;
 
 fn vsync() {
     unsafe {
         asm!("svc 0x05" ::: "r0", "r1");
     }
+}
+
+fn vflip() {
+    DISPCNT.write(DISPCNT.read() ^ SELECT_FRAME);
 }
 
 struct Mode4;
@@ -202,6 +207,10 @@ pub unsafe extern "C" fn main() -> ! {
         Mode4::draw_index(pxl.x, pxl.y, 0);
 
         draw_copyright_symbol();
+
+        if input.key_down(Key::Select) {
+            vflip();
+        }
 
         pxl.update(&input);
         pxl.render();

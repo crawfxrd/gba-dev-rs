@@ -24,6 +24,7 @@ use interrupt::Irq;
 use register::{ReadWrite, Register};
 
 const DISPCNT: Register<u16, ReadWrite> = Register::new(0x0400_0000);
+const VRAM: *mut u16 = 0x0600_0000 as *mut u16;
 
 #[derive(Clone, Copy, PartialEq)]
 struct Color(u16);
@@ -68,7 +69,7 @@ impl Mode4 {
         let pos = x + y * Self::WIDTH;
 
         // So first determine offset by converting u8 to u16.
-        let addr = (0x0600_0000 as *mut u16).offset((pos >> 1) as isize);
+        let addr = VRAM.offset((pos / 2) as isize);
 
         // Then set the correct byte of the u16 while preserving the other.
         let prev = ptr::read_volatile(addr);
@@ -86,9 +87,9 @@ unsafe fn set_palette() {
 
     ptr::write_volatile(PALETTE, BLACK.0);
     ptr::write_volatile(PALETTE.offset(1), WHITE.0);
-    ptr::write_volatile(PALETTE.offset(2), GRAY.0);
-    ptr::write_volatile(PALETTE.offset(3), LIGHT_GRAY.0);
-    ptr::write_volatile(PALETTE.offset(4), WHITE.0);
+    ptr::write_volatile(PALETTE.offset(2), Color::new(0x18, 0x19, 0x19).0);
+    ptr::write_volatile(PALETTE.offset(3), Color::new(0x0D, 0x10, 0x10).0);
+    ptr::write_volatile(PALETTE.offset(4), Color::new(0x0A, 0x0D, 0x0D).0);
     ptr::write_volatile(PALETTE.offset(5), RED.0);
     ptr::write_volatile(PALETTE.offset(6), GREEN.0);
     ptr::write_volatile(PALETTE.offset(7), BLUE.0);
@@ -96,6 +97,29 @@ unsafe fn set_palette() {
     ptr::write_volatile(PALETTE.offset(9), CYAN.0);
     ptr::write_volatile(PALETTE.offset(10), YELLOW.0);
     ptr::write_volatile(PALETTE.offset(11), LIGHT_STEEL_BLUE.0);
+}
+
+unsafe fn draw_copyright_symbol() {
+    const COPYRIGHT: [u16; 32] = [
+        0x0000, 0x0102, 0x0201, 0x0000,
+        0x0100, 0x0000, 0x0000, 0x0001,
+        0x0002, 0x0104, 0x0301, 0x0200,
+        0x0001, 0x0001, 0x0000, 0x0100,
+        0x0001, 0x0001, 0x0000, 0x0100,
+        0x0002, 0x0104, 0x0301, 0x0200,
+        0x0100, 0x0000, 0x0000, 0x0001,
+        0x0000, 0x0102, 0x0201, 0x0000,
+    ];
+
+    // Offset to put it in the bottom left corner
+    let pos = (Mode4::WIDTH * (Mode4::HEIGHT - 8) / 2) as isize;
+
+    for i in (0..32).step_by(4) {
+        ptr::write_volatile(VRAM.offset(pos + (i / 4) * 120 + 0), COPYRIGHT[i as usize]);
+        ptr::write_volatile(VRAM.offset(pos + (i / 4) * 120 + 1), COPYRIGHT[(i + 1) as usize]);
+        ptr::write_volatile(VRAM.offset(pos + (i / 4) * 120 + 2), COPYRIGHT[(i + 2) as usize]);
+        ptr::write_volatile(VRAM.offset(pos + (i / 4) * 120 + 3), COPYRIGHT[(i + 3) as usize]);
+    }
 }
 
 struct Pixel {
@@ -137,8 +161,8 @@ impl Pixel {
         }
 
         if input.key_down(Key::Start) {
-            self.x = Mode4::WIDTH >> 1;
-            self.y = Mode4::HEIGHT >> 1;
+            self.x = Mode4::WIDTH / 2;
+            self.y = Mode4::HEIGHT / 2;
         }
 
         if input.key_down(Key::A) {
@@ -167,7 +191,7 @@ pub unsafe extern "C" fn main() -> ! {
     set_palette();
 
     let mut input = Input::new();
-    let mut pxl = Pixel::new(Mode4::WIDTH >> 1, Mode4::HEIGHT >> 1, 9);
+    let mut pxl = Pixel::new(Mode4::WIDTH / 2, Mode4::HEIGHT / 2, 9);
 
     loop {
         vsync();
@@ -176,6 +200,8 @@ pub unsafe extern "C" fn main() -> ! {
         // XXX: Background not redrawn on new frame. Fill current pixel with
         // background color to not "streak" when moving.
         Mode4::draw_index(pxl.x, pxl.y, 0);
+
+        draw_copyright_symbol();
 
         pxl.update(&input);
         pxl.render();

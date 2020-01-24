@@ -10,18 +10,18 @@ fn main() {
     println!("cargo:rustc-link-arg-bins=-Map=target/{}.map", profile);
 
     cc::Build::new()
-        .compiler("arm-none-eabi-gcc")
+        .compiler("clang")
         .no_default_flags(true)
         .warnings_into_errors(true)
-        .flag("-mcpu=arm7tdmi")
+        .flag("--target=arm-none-eabi")
         .file("src/entry.S")
         .compile("entry");
 
     cc::Build::new()
-        .compiler("arm-none-eabi-gcc")
+        .compiler("clang")
         .no_default_flags(true)
         .warnings_into_errors(true)
-        .flag("-mcpu=arm7tdmi")
+        .flag("--target=arm-none-eabi")
         .file("src/interrupt.S")
         .compile("interrupt");
 }

@@ -1,0 +1,27 @@
+{
+  "arch": "arm",
+  "atomic-cas": false,
+  "data-layout": "e-m:e-p:32:32-Fi8-i64:64-v128:64:128-a:0:32-n32-S64",
+  "eliminate-frame-pointer": false,
+  "emit-debug-gdb-scripts": false,
+  "executables": true,
+  "features": "+soft-float,+strict-align",
+  "has-thumb-interworking": true,
+  "is-builtin": true,
+  "linker": "rust-lld",
+  "linker-flavor": "ld.lld",
+  "linker-is-gnu": false,
+  "llvm-target": "thumbv4t-none-eabi",
+  "main-needs-argc-argv": false,
+  "panic-strategy": "abort",
+  "relocation-model": "static",
+  "target-pointer-width": "32",
+  "unsupported-abis": [
+    "stdcall",
+    "fastcall",
+    "vectorcall",
+    "thiscall",
+    "win64",
+    "sysv64"
+  ]
+}

@@ -5,7 +5,7 @@
 set -e
 
 cargo build
-arm-none-eabi-objcopy -O binary ./target/thumbv4t-none-eabi/debug/untitled ./target/debug.gba
+rust-objcopy -O binary ./target/armv4t-none-eabi/debug/untitled ./target/debug.gba
 
 cargo build --release
-arm-none-eabi-objcopy -O binary ./target/thumbv4t-none-eabi/release/untitled ./target/release.gba
+rust-objcopy -O binary ./target/armv4t-none-eabi/release/untitled ./target/release.gba

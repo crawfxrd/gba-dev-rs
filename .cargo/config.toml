@@ -1,7 +1,7 @@
 [build]
-target = "thumbv4t-none-eabi"
+target = "armv4t-none-eabi.json"
 
-[target.thumbv4t-none-eabi]
+[target.armv4t-none-eabi]
 runner = "mgba-qt"
 
 [unstable]

@@ -1,3 +1,6 @@
+[env]
+TARGET = "./target/thumbv4-none-eabi/release/untitled"
+
 [tasks.default]
 alias = "rom"
 
@@ -16,9 +19,14 @@ args = ["xbuild", "--release"]
 [tasks.rom]
 dependencies = ["release"]
 command = "arm-none-eabi-objcopy"
-args = ["-O", "binary", "./target/thumbv4-none-eabi/release/untitled", "./target/untitled.gba"]
+args = ["-O", "binary", "${TARGET}", "./target/untitled.gba"]
 
 [tasks.run]
 dependencies = ["release"]
 command = "cargo"
 args = ["xrun", "--release"]
+
+[tasks.readelf]
+dependencies = ["release"]
+command = "readelf"
+args = ["-a", "${TARGET}"]

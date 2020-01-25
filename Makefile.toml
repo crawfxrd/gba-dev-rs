@@ -1,0 +1,24 @@
+[tasks.default]
+alias = "rom"
+
+[tasks.clean]
+command = "cargo"
+args = ["clean"]
+
+[tasks.debug]
+command = "cargo"
+args = ["xbuild"]
+
+[tasks.release]
+command = "cargo"
+args = ["xbuild", "--release"]
+
+[tasks.rom]
+dependencies = ["release"]
+command = "arm-none-eabi-objcopy"
+args = ["-O", "binary", "./target/thumbv4-none-eabi/release/untitled", "./target/untitled.gba"]
+
+[tasks.run]
+dependencies = ["release"]
+command = "cargo"
+args = ["xrun", "--release"]

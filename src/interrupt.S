@@ -12,6 +12,7 @@
     .cpu arm7tdmi
 
     .global master_isr
+    .type master_isr, STT_FUNC
     .func
 master_isr:
     @ Acknowledge VBLANK interrupt

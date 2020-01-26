@@ -26,6 +26,11 @@ dependencies = ["release"]
 command = "cargo"
 args = ["xrun", "--release"]
 
+[tasks.objdump]
+dependencies = ["release"]
+command = "arm-none-eabi-objdump"
+args = ["-x", "${TARGET}"]
+
 [tasks.readelf]
 dependencies = ["release"]
 command = "readelf"

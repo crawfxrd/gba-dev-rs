@@ -184,6 +184,9 @@ impl Pixel {
 
 #[no_mangle]
 pub unsafe extern "C" fn main() -> ! {
+    mgba::enable();
+    mgba::log(mgba::Level::Info, "Testing mGBA logging");
+
     extern "C" {
         fn master_isr();
     }

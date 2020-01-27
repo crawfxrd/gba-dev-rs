@@ -9,6 +9,9 @@ keywords = ["gameboy", "gba"]
 categories = ["embedded", "games"]
 publish = false
 
+[profile.release]
+lto = true
+
 [build-dependencies]
 cc = "1.0"
 

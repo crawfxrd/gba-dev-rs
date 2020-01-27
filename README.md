@@ -30,10 +30,6 @@ for interworking. This instruction is not available in ARMv4T architecture.
 Cargo is [configured][cargo-config] to run with the provided ARM7TDMI target
 file `thumbv4-none-eabi.json`.
 
-```
-cargo xbuild
-```
-
 To make it a GBA ROM file, build in release mode and convert the target from
 ELF to binary.
 

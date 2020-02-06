@@ -87,21 +87,30 @@ impl Mode4 {
     }
 }
 
-unsafe fn set_palette() {
-    const PALETTE: *mut u16 = 0x0500_0000 as *mut u16;
+struct Palette;
 
-    ptr::write_volatile(PALETTE, BLACK.0);
-    ptr::write_volatile(PALETTE.offset(1), WHITE.0);
-    ptr::write_volatile(PALETTE.offset(2), Color::new(0x18, 0x19, 0x19).0);
-    ptr::write_volatile(PALETTE.offset(3), Color::new(0x0D, 0x10, 0x10).0);
-    ptr::write_volatile(PALETTE.offset(4), Color::new(0x0A, 0x0D, 0x0D).0);
-    ptr::write_volatile(PALETTE.offset(5), RED.0);
-    ptr::write_volatile(PALETTE.offset(6), GREEN.0);
-    ptr::write_volatile(PALETTE.offset(7), BLUE.0);
-    ptr::write_volatile(PALETTE.offset(8), MAGENTA.0);
-    ptr::write_volatile(PALETTE.offset(9), CYAN.0);
-    ptr::write_volatile(PALETTE.offset(10), YELLOW.0);
-    ptr::write_volatile(PALETTE.offset(11), LIGHT_STEEL_BLUE.0);
+impl Palette {
+    const PALETTE: *mut u16 = 0x0500_0000 as *mut u16;
+    fn set(index: u8, color: Color) {
+        unsafe {
+            ptr::write_volatile(Self::PALETTE.offset(index as isize), color.0);
+        }
+    }
+}
+
+fn set_palette() {
+    Palette::set(0, BLACK);
+    Palette::set(1, WHITE);
+    Palette::set(2, Color::new(0x18, 0x19, 0x19));
+    Palette::set(3, Color::new(0x0D, 0x10, 0x10));
+    Palette::set(4, Color::new(0x0A, 0x0D, 0x0D));
+    Palette::set(5, RED);
+    Palette::set(6, GREEN);
+    Palette::set(7, BLUE);
+    Palette::set(8, MAGENTA);
+    Palette::set(9, CYAN);
+    Palette::set(10, YELLOW);
+    Palette::set(11, LIGHT_STEEL_BLUE);
 }
 
 unsafe fn draw_copyright_symbol() {

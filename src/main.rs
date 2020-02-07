@@ -57,24 +57,33 @@ fn vsync() {
     }
 }
 
-fn vflip() {
-    DISPCNT.write(DISPCNT.read() ^ SELECT_FRAME);
+struct Mode4 {
+    vram: *mut u16,
 }
-
-struct Mode4;
 
 impl Mode4 {
     const WIDTH: u32 = 240;
     const HEIGHT: u32 = 160;
+    const FRAME_SIZE: usize = 0xA000;
+
+    fn new(dispcnt: u16) -> Self {
+        DISPCNT.write(MODE4 | dispcnt);
+        Self { vram: VRAM }
+    }
+
+    fn vflip(&mut self) {
+        self.vram = (self.vram as usize ^ Self::FRAME_SIZE) as *mut u16;
+        DISPCNT.write(DISPCNT.read() ^ SELECT_FRAME);
+    }
 
     // Set the pixel at (x, y) to the color of the given palette index
-    unsafe fn draw_index(x: u32, y: u32, color: u8) {
+    unsafe fn draw_index(&self, x: u32, y: u32, color: u8) {
         // In mode 4, each pixel is a byte, representing the palette index of
         // the color. However, VRAM must be accessed with u16 or u32.
         let pos = x + y * Self::WIDTH;
 
         // So first determine offset by converting u8 to u16.
-        let addr = VRAM.offset((pos / 2) as isize);
+        let addr = self.vram.offset((pos / 2) as isize);
 
         // Then set the correct byte of the u16 while preserving the other.
         let prev = ptr::read_volatile(addr);
@@ -113,7 +122,7 @@ fn set_palette() {
     Palette::set(11, LIGHT_STEEL_BLUE);
 }
 
-unsafe fn draw_copyright_symbol() {
+unsafe fn draw_copyright_symbol(display: &Mode4) {
     const COPYRIGHT: [u16; 32] = [
         0x0000, 0x0102, 0x0201, 0x0000,
         0x0100, 0x0000, 0x0000, 0x0001,
@@ -129,10 +138,10 @@ unsafe fn draw_copyright_symbol() {
     let pos = (Mode4::WIDTH * (Mode4::HEIGHT - 8) / 2) as isize;
 
     for i in (0..32).step_by(4) {
-        ptr::write_volatile(VRAM.offset(pos + (i / 4) * 120 + 0), COPYRIGHT[i as usize]);
-        ptr::write_volatile(VRAM.offset(pos + (i / 4) * 120 + 1), COPYRIGHT[(i + 1) as usize]);
-        ptr::write_volatile(VRAM.offset(pos + (i / 4) * 120 + 2), COPYRIGHT[(i + 2) as usize]);
-        ptr::write_volatile(VRAM.offset(pos + (i / 4) * 120 + 3), COPYRIGHT[(i + 3) as usize]);
+        display.vram.offset(pos + (i / 4) * 120 + 0).write_volatile(COPYRIGHT[i as usize]);
+        display.vram.offset(pos + (i / 4) * 120 + 1).write_volatile(COPYRIGHT[(i + 1) as usize]);
+        display.vram.offset(pos + (i / 4) * 120 + 2).write_volatile(COPYRIGHT[(i + 2) as usize]);
+        display.vram.offset(pos + (i / 4) * 120 + 3).write_volatile(COPYRIGHT[(i + 3) as usize]);
     }
 }
 
@@ -147,8 +156,8 @@ impl Pixel {
         Self { x, y, color }
     }
 
-    unsafe fn render(&self) {
-        Mode4::draw_index(self.x, self.y, self.color);
+    unsafe fn render(&self, display: &Mode4) {
+        display.draw_index(self.x, self.y, self.color);
     }
 
     fn update(&mut self, input: &Input) {
@@ -203,7 +212,7 @@ pub unsafe extern "C" fn main() -> ! {
     interrupt::init(master_isr);
     interrupt::enable(Irq::VBlank);
 
-    DISPCNT.write(MODE4 | ENABLE_BG2);
+    let mut display = Mode4::new(ENABLE_BG2);
 
     set_palette();
 
@@ -216,16 +225,13 @@ pub unsafe extern "C" fn main() -> ! {
 
         // XXX: Background not redrawn on new frame. Fill current pixel with
         // background color to not "streak" when moving.
-        Mode4::draw_index(pxl.x, pxl.y, 0);
+        display.draw_index(pxl.x, pxl.y, 0);
+        display.vflip();
 
-        draw_copyright_symbol();
-
-        if input.key_down(Key::Select) {
-            vflip();
-        }
+        draw_copyright_symbol(&display);
 
         pxl.update(&input);
-        pxl.render();
+        pxl.render(&display);
     }
 }
 

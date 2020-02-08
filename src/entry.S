@@ -10,6 +10,7 @@
     .cpu arm7tdmi
 
     .global _start
+    .type _start, STT_FUNC
 _start:
     b .init
 
@@ -48,3 +49,4 @@ _start:
     @ Branch to main(), switching to THUMB state.
     ldr r0, =main
     bx r0
+    .size _start, . - _start

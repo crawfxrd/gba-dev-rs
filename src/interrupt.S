@@ -13,7 +13,6 @@
 
     .global master_isr
     .type master_isr, STT_FUNC
-    .func
 master_isr:
     @ Acknowledge VBLANK interrupt
     @ IF = 1
@@ -28,4 +27,4 @@ master_isr:
     strh r1, [r3]
 
     bx lr
-    .endfunc
+    .size master_isr, . - master_isr

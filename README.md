@@ -19,7 +19,7 @@ cargo install cargo-make cargo-xbuild
 
 GCC is used for compiling the non-Rust code. Assembly must be used to write the
 ROM header and the master ISR. Any addition ARM functions would also have to be
-written in assembly or C, as Rust cannot mix Thumb and ARM modes.
+written in assembly or C, as Rust cannot mix Thumb and ARM states.
 
 GCC is also required for linking the object files into the final ELF binary.
 `rust-lld` cannot be used for linking because it will emit a `blx` instruction

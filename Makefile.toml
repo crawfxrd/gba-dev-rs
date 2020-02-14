@@ -22,7 +22,7 @@ command = "arm-none-eabi-objcopy"
 args = ["-O", "binary", "${TARGET}", "./target/untitled.gba"]
 
 [tasks.run]
-dependencies = ["release"]
+dependencies = ["rom"]
 command = "cargo"
 args = ["xrun", "--release", "--", "${@}"]
 

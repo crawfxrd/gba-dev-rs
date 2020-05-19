@@ -4,8 +4,8 @@
  * Copyright (c) 2020 Tim Crawford <crawfxrd@gmail.com>
  */
 
-#![feature(asm)]
 #![feature(core_intrinsics)]
+#![feature(llvm_asm)]
 #![no_std]
 #![no_main]
 #![deny(warnings)]
@@ -53,7 +53,7 @@ const ENABLE_BG2: u16 = 1 << 10;
 
 fn vsync() {
     unsafe {
-        asm!("svc 0x05" ::: "r0", "r1");
+        llvm_asm!("svc 0x05" ::: "r0", "r1");
     }
 }
 

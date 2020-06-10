@@ -237,5 +237,6 @@ pub unsafe extern "C" fn main() -> ! {
 
 #[panic_handler]
 fn panic(_info: &core::panic::PanicInfo) -> ! {
-    unsafe { core::intrinsics::abort() }
+    // XXX: Marked safe by rust-lang/rust#72204
+    core::intrinsics::abort();
 }

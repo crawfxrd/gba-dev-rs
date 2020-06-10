@@ -77,7 +77,7 @@ Continuing.
 ## License
 
 This software is made available under the terms of the Mozilla Public License,
-version 2.0. See [LICENSE](./Licenses/MPL-2.0.txt) for details.
+version 2.0. See [LICENSE](./LICENSES/MPL-2.0.txt) for details.
 
 [Rust]: https://www.rust-lang.org/
 [cargo-config]: https://doc.rust-lang.org/cargo/reference/config.html

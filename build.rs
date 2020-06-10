@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: CC0-1.0
+
 fn main() {
     cc::Build::new()
         .compiler("arm-none-eabi-gcc")

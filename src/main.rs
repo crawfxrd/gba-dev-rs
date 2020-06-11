@@ -122,7 +122,7 @@ fn set_palette() {
     Palette::set(11, LIGHT_STEEL_BLUE);
 }
 
-unsafe fn draw_copyright_symbol(display: &Mode4) {
+fn draw_copyright_symbol(display: &Mode4) {
     const COPYRIGHT: [u16; 32] = [
         0x0000, 0x0102, 0x0201, 0x0000,
         0x0100, 0x0000, 0x0000, 0x0001,
@@ -138,10 +138,12 @@ unsafe fn draw_copyright_symbol(display: &Mode4) {
     let pos = (Mode4::WIDTH * (Mode4::HEIGHT - 8) / 2) as isize;
 
     for i in (0..32).step_by(4) {
-        display.vram.offset(pos + (i / 4) * 120 + 0).write_volatile(COPYRIGHT[i as usize]);
-        display.vram.offset(pos + (i / 4) * 120 + 1).write_volatile(COPYRIGHT[(i + 1) as usize]);
-        display.vram.offset(pos + (i / 4) * 120 + 2).write_volatile(COPYRIGHT[(i + 2) as usize]);
-        display.vram.offset(pos + (i / 4) * 120 + 3).write_volatile(COPYRIGHT[(i + 3) as usize]);
+        unsafe {
+            display.vram.offset(pos + (i / 4) * 120 + 0).write_volatile(COPYRIGHT[i as usize]);
+            display.vram.offset(pos + (i / 4) * 120 + 1).write_volatile(COPYRIGHT[(i + 1) as usize]);
+            display.vram.offset(pos + (i / 4) * 120 + 2).write_volatile(COPYRIGHT[(i + 2) as usize]);
+            display.vram.offset(pos + (i / 4) * 120 + 3).write_volatile(COPYRIGHT[(i + 3) as usize]);
+        }
     }
 }
 
@@ -200,8 +202,9 @@ impl Pixel {
     }
 }
 
+// XXX: Is it safe to call Rust from asm?
 #[no_mangle]
-pub unsafe extern "C" fn main() -> ! {
+pub extern "C" fn main() -> ! {
     mgba::enable();
     mgba::log(mgba::Level::Info, "Testing mGBA logging");
 
@@ -225,13 +228,13 @@ pub unsafe extern "C" fn main() -> ! {
 
         // XXX: Background not redrawn on new frame. Fill current pixel with
         // background color to not "streak" when moving.
-        display.draw_index(pxl.x, pxl.y, 0);
+        unsafe { display.draw_index(pxl.x, pxl.y, 0); }
         display.vflip();
 
         draw_copyright_symbol(&display);
 
         pxl.update(&input);
-        pxl.render(&display);
+        unsafe { pxl.render(&display); }
     }
 }
 

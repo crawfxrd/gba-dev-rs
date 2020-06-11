@@ -77,22 +77,30 @@ impl Mode4 {
     }
 
     // Set the pixel at (x, y) to the color of the given palette index
-    unsafe fn draw_index(&self, x: u32, y: u32, color: u8) {
+    fn draw_index(&self, x: u32, y: u32, color: u8) {
+        if x >= Self::WIDTH || y >= Self::HEIGHT {
+            // TODO: Handle better
+            panic!();
+        }
+
         // In mode 4, each pixel is a byte, representing the palette index of
         // the color. However, VRAM must be accessed with u16 or u32.
         let pos = x + y * Self::WIDTH;
 
-        // So first determine offset by converting u8 to u16.
-        let addr = self.vram.offset((pos / 2) as isize);
+        unsafe {
+            // So first determine offset by converting u8 to u16.
+            let addr = self.vram.offset((pos / 2) as isize);
 
-        // Then set the correct byte of the u16 while preserving the other.
-        let prev = ptr::read_volatile(addr);
-        let value = if (pos & 1) == 1 {
-            (prev & 0x00FF) | ((color as u16) << 8)
-        } else {
-            (prev & 0xFF00) | (color as u16)
-        };
-        ptr::write_volatile(addr, value);
+            // Then set the correct byte of the u16 while preserving the other.
+            let prev = ptr::read_volatile(addr);
+            let value = if (pos & 1) == 1 {
+                (prev & 0x00FF) | ((color as u16) << 8)
+            } else {
+                (prev & 0xFF00) | (color as u16)
+            };
+
+            ptr::write_volatile(addr, value);
+        }
     }
 }
 
@@ -158,7 +166,7 @@ impl Pixel {
         Self { x, y, color }
     }
 
-    unsafe fn render(&self, display: &Mode4) {
+    fn render(&self, display: &Mode4) {
         display.draw_index(self.x, self.y, self.color);
     }
 
@@ -228,13 +236,13 @@ pub extern "C" fn main() -> ! {
 
         // XXX: Background not redrawn on new frame. Fill current pixel with
         // background color to not "streak" when moving.
-        unsafe { display.draw_index(pxl.x, pxl.y, 0); }
+        display.draw_index(pxl.x, pxl.y, 0);
         display.vflip();
 
         draw_copyright_symbol(&display);
 
         pxl.update(&input);
-        unsafe { pxl.render(&display); }
+        pxl.render(&display);
     }
 }
 

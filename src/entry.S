@@ -44,9 +44,23 @@ _start:
     .zero 2                 @ Reserved
 
 .init:
-    @ TODO: Set up stack?
+    @ Initialize stack for IRQ mode
+    mov r0, #0x12
+    msr cpsr_fc, r0
+    ldr sp, =0x3007FA0      @ XXX: Value used in Fire Emblem, Pokemon Fire Red
 
-    @ Branch to main(), switching to THUMB state.
+    @ Initialize stack for system mode
+    mov r0, #0x1F
+    msr cpsr_fc, r0
+    ldr sp, =0x3007E00      @ XXX: Value used in Fire Emblem
+    @ Leave processor in system mode
+
+    @ GBA ROMs normally set the master ISR here
+
+    @ Branch to main(), switching to THUMB state
     ldr r0, =main
+    mov lr, pc
     bx r0
+    b .init
+
     .size _start, . - _start

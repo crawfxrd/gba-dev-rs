@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 /*
- * Copyright (c) 2020 Tim Crawford <crawfxrd@gmail.com>
+ * Copyright 2020 Tim Crawford <crawfxrd@gmail.com>
  */
 
 #![feature(core_intrinsics)]

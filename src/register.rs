@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 /*
- * Copyright (c) 2019 Tim Crawford <crawfxrd@gmail.com>
+ * Copyright 2019 Tim Crawford <crawfxrd@gmail.com>
  */
 
 use core::marker::PhantomData;

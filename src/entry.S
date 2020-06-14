@@ -40,19 +40,19 @@ _start:
     .byte 0x00              @ Device type; 0 for normal catridges
     .zero 7                 @ Reserved
     .byte 0x00              @ Game version
-    .byte 0x00              @ Header complement check; TODO: calculate checksum
+    .byte 0x69              @ Header checksum
     .zero 2                 @ Reserved
 
 .init:
     @ Initialize stack for IRQ mode
     mov r0, #0x12
     msr cpsr_fc, r0
-    ldr sp, =0x3007FA0      @ XXX: Value used in Fire Emblem, Pokemon Fire Red
+    ldr sp, =0x03007FA0     @ XXX: Value used in Fire Emblem, Pokemon Fire Red
 
     @ Initialize stack for system mode
     mov r0, #0x1F
     msr cpsr_fc, r0
-    ldr sp, =0x3007E00      @ XXX: Value used in Fire Emblem
+    ldr sp, =0x03007E00     @ XXX: Value used in Fire Emblem
     @ Leave processor in system mode
 
     @ GBA ROMs normally set the master ISR here

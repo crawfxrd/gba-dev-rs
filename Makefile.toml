@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: CC0-1.0
 
 [env]
-TARGET = "./target/thumbv4-none-eabi/release/untitled"
+TARGET = "./target/thumbv4t-none-eabi/release/untitled"
 
 [tasks.default]
 alias = "rom"
@@ -16,7 +16,7 @@ args = ["build", "-Zbuild-std=core"]
 
 [tasks.release]
 command = "cargo"
-args = ["build", "--release", "-Zbuild-std=core"]
+args = ["build", "-Zbuild-std=core", "--release"]
 
 [tasks.rom]
 dependencies = ["release"]

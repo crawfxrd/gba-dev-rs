@@ -1,8 +1,8 @@
-[target.thumbv4-none-eabi]
+[target.thumbv4t-none-eabi]
 runner = "mgba-qt"
 rustflags = [
     "-C", "link-arg=-Tsrc/linker.ld",
 ]
 
 [build]
-target = "thumbv4-none-eabi.json"
+target = "thumbv4t-none-eabi"

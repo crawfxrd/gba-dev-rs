@@ -12,11 +12,11 @@ args = ["clean"]
 
 [tasks.debug]
 command = "cargo"
-args = ["build", "-Zbuild-std=core"]
+args = ["build"]
 
 [tasks.release]
 command = "cargo"
-args = ["build", "-Zbuild-std=core", "--release"]
+args = ["build", "--release"]
 
 [tasks.rom]
 dependencies = ["release"]
@@ -26,7 +26,7 @@ args = ["-O", "binary", "${TARGET}", "./target/untitled.gba"]
 [tasks.run]
 dependencies = ["rom"]
 command = "cargo"
-args = ["run", "-Zbuild-std=core", "--release", "--", "${@}"]
+args = ["run", "--release", "--", "${@}"]
 
 [tasks.objdump]
 dependencies = ["release"]

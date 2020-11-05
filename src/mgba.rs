@@ -1,8 +1,5 @@
+// SPDX-FileCopyrightText: 2020 Tim Crawford <crawfxrd@gmail>
 // SPDX-License-Identifier: MPL-2.0
-
-/*
- * Copyright 2020 Tim Crawford <crawfxrd@gmail.com>
- */
 
 // TOOD: Keep logs in ELF, remove from GBA ROM
 

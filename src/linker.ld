@@ -1,3 +1,4 @@
+/* SPDX-FileCopyrightText: NONE */
 /* SPDX-License-Identifier: CC0-1.0 */
 /*
  * https://sourceware.org/binutils/docs/ld/Scripts.html

@@ -7,7 +7,7 @@ Embedded Rust development targeting the Nintendo Game Boy Advance.
 - [Rust] and Cargo
 - An `arm-none-eabi` GCC toolchain (e.g., [devkitARM])
 - [mGBA] for running the binary
-- \[Optional\] [cargo-make] for simplifying the build steps
+- [cargo-make] for simplifying the build steps
 
 ```
 sudo dnf -y install arm-none-eabi-gcc-cs arm-none-eabi-newlib
@@ -33,14 +33,14 @@ To make it a GBA ROM file, build in release mode and convert the target from
 ELF to binary.
 
 ```
+cargo make
+```
+
+Or, manually with
+
+```
 cargo build -Zbuild-std=core --release
 arm-none-eabi-objcopy -O binary target/thumbv4t-none-eabi/release/untitled target/untitled.gba
-```
-
-Or, with `cargo-make`
-
-```
-cargo make
 ```
 
 ## Running
@@ -50,7 +50,7 @@ called `mgba-qt`. If the mGBA binary uses a different name (e.g., `mgba`,
 `mgba-sdl`), modify the `runner` value in `.cargo/config`.
 
 ```
-cargo run -Zbuild-std=core --release -- -3
+cargo make run -- -3
 ```
 
 ### Debugging

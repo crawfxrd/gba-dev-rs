@@ -1,8 +1,6 @@
 // SPDX-FileCopyrightText: 2020 Tim Crawford <crawfxrd@gmail>
 // SPDX-License-Identifier: MPL-2.0
 
-// TOOD: Keep logs in ELF, remove from GBA ROM
-
 use crate::register::{ReadWrite, Register, WriteOnly};
 
 const MGBA_DEBUG_FLAGS: Register<u16, WriteOnly> = Register::new(0x04FF_F700);

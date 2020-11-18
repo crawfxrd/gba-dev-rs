@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 #![feature(core_intrinsics)]
-#![feature(llvm_asm)]
+#![feature(asm)]
 #![no_std]
 #![no_main]
 #![deny(warnings)]
@@ -29,9 +29,13 @@ const MODE4: u16 = 0x4;
 const SELECT_FRAME: u16 = 1 << 4;
 const ENABLE_BG2: u16 = 1 << 10;
 
+#[inline]
 fn vsync() {
     unsafe {
-        llvm_asm!("svc 0x05" ::: "r0", "r1");
+        asm!("svc 0x05",
+            // Clobbers
+            out("r0") _, out("r1") _
+        );
     }
 }
 

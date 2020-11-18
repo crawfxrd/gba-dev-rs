@@ -10,11 +10,13 @@
 #![allow(clippy::collapsible_if)]
 #![allow(clippy::missing_safety_doc)]
 
+mod color;
 mod input;
 mod interrupt;
 mod mgba;
 mod register;
 
+use color::Color;
 use core::ptr;
 use input::{Input, Key};
 use interrupt::Irq;
@@ -22,27 +24,6 @@ use register::{ReadWrite, Register};
 
 const DISPCNT: Register<u16, ReadWrite> = Register::new(0x0400_0000);
 const VRAM: *mut u16 = 0x0600_0000 as *mut u16;
-
-#[derive(Clone, Copy, PartialEq)]
-struct Color(u16);
-
-impl Color {
-    pub const fn new(red: u32, green: u32, blue: u32) -> Self {
-        Self(((red & 0x1F) | ((green & 0x1F) << 5) | ((blue & 0x1F) << 10)) as u16)
-    }
-}
-
-const BLACK: Color = Color::new(0, 0, 0);
-const GRAY: Color = Color::new(0x08, 0x08, 0x08);
-const LIGHT_GRAY: Color = Color::new(0x1C, 0x1C, 0x1C);
-const WHITE: Color = Color::new(0x1F, 0x1F, 0x1F);
-const RED: Color = Color::new(0x1F, 0, 0);
-const GREEN: Color = Color::new(0, 0x1F, 0);
-const BLUE: Color = Color::new(0, 0, 0x1F);
-const MAGENTA: Color = Color::new(0x1F, 0, 0x1F);
-const CYAN: Color = Color::new(0, 0x1F, 0x1F);
-const YELLOW: Color = Color::new(0x1F, 0x1F, 0);
-const LIGHT_STEEL_BLUE: Color = Color::new(0x16, 0x18, 0x1B);
 
 const MODE4: u16 = 0x4;
 const SELECT_FRAME: u16 = 1 << 4;
@@ -107,24 +88,24 @@ impl Palette {
     const PALETTE: *mut u16 = 0x0500_0000 as *mut u16;
     fn set(index: u8, color: Color) {
         unsafe {
-            ptr::write_volatile(Self::PALETTE.offset(index as isize), color.0);
+            ptr::write_volatile(Self::PALETTE.offset(index as isize), u16::from(color));
         }
     }
 }
 
 fn set_palette() {
-    Palette::set(0, BLACK);
-    Palette::set(1, WHITE);
+    Palette::set(0, Color::BLACK);
+    Palette::set(1, Color::WHITE);
     Palette::set(2, Color::new(0x18, 0x19, 0x19));
     Palette::set(3, Color::new(0x0D, 0x10, 0x10));
     Palette::set(4, Color::new(0x0A, 0x0D, 0x0D));
-    Palette::set(5, RED);
-    Palette::set(6, GREEN);
-    Palette::set(7, BLUE);
-    Palette::set(8, MAGENTA);
-    Palette::set(9, CYAN);
-    Palette::set(10, YELLOW);
-    Palette::set(11, LIGHT_STEEL_BLUE);
+    Palette::set(5, Color::RED);
+    Palette::set(6, Color::GREEN);
+    Palette::set(7, Color::BLUE);
+    Palette::set(8, Color::MAGENTA);
+    Palette::set(9, Color::CYAN);
+    Palette::set(10, Color::YELLOW);
+    Palette::set(11, Color::LIGHT_STEEL_BLUE);
 }
 
 fn draw_copyright_symbol(display: &Mode4) {

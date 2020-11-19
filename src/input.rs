@@ -63,3 +63,9 @@ impl Input {
         self.key_was_down(key) && self.key_is_up(key)
     }
 }
+
+impl From<Input> for u16 {
+    fn from(input: Input) -> Self {
+        input.current
+    }
+}

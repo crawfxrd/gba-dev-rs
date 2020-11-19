@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2020 Tim Crawford <crawfxrd@gmail>
 // SPDX-License-Identifier: MPL-2.0
 
+/// A 15-bit color, with each RGB component represented as 5 bits.
 #[derive(Clone, Copy, PartialEq)]
 pub struct Color(u16);
 
@@ -21,14 +22,17 @@ impl Color {
         Self((red & 0x1F) | ((green & 0x1F) << 5) | ((blue & 0x1F) << 10))
     }
 
+    /// The red component of a color.
     pub const fn red(&self) -> u16 {
         self.0 & 0x1F
     }
 
+    /// The green component of a color.
     pub const fn green(&self) -> u16 {
         (self.0 >> 5) & 0x1F
     }
 
+    /// The blue component of a color.
     pub const fn blue(&self) -> u16 {
         (self.0 >> 10) & 0x1F
     }

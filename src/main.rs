@@ -16,11 +16,12 @@ mod interrupt;
 mod mgba;
 mod register;
 
-use color::Color;
 use core::ptr;
-use input::{Input, Key};
-use interrupt::Irq;
-use register::{ReadWrite, Register};
+
+use crate::color::Color;
+use crate::input::{Input, Key};
+use crate::interrupt::Irq;
+use crate::register::{ReadWrite, Register};
 
 const DISPCNT: Register<u16, ReadWrite> = Register::new(0x0400_0000);
 const VRAM: *mut u16 = 0x0600_0000 as *mut u16;
@@ -92,7 +93,7 @@ impl Palette {
     const PALETTE: *mut u16 = 0x0500_0000 as *mut u16;
     fn set(index: u8, color: Color) {
         unsafe {
-            ptr::write_volatile(Self::PALETTE.offset(index as isize), u16::from(color));
+            Self::PALETTE.offset(index as isize).write_volatile(u16::from(color));
         }
     }
 }
@@ -181,12 +182,16 @@ impl Pixel {
         }
 
         if input.key_down(Key::A) {
+            mgba::log(mgba::Level::Info, "Color = CYAN");
             self.color = 9;
         } else if input.key_down(Key::B) {
+            mgba::log(mgba::Level::Info, "Color = YELLOW");
             self.color = 10;
         } else if input.key_down(Key::R) {
+            mgba::log(mgba::Level::Info, "Color = MAGENTA");
             self.color = 8;
         } else if input.key_down(Key::L) {
+            mgba::log(mgba::Level::Info, "Color = LIGHT_STEEL_BLUE");
             self.color = 11;
         }
     }

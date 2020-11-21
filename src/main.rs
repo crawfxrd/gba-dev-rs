@@ -16,8 +16,6 @@ mod interrupt;
 mod mgba;
 mod register;
 
-use core::ptr;
-
 use crate::color::Color;
 use crate::input::{Input, Key};
 use crate::interrupt::Irq;
@@ -75,14 +73,14 @@ impl Mode4 {
             let addr = self.vram.offset((pos / 2) as isize);
 
             // Then set the correct byte of the u16 while preserving the other.
-            let prev = ptr::read_volatile(addr);
+            let prev = addr.read_volatile();
             let value = if (pos & 1) == 1 {
                 (prev & 0x00FF) | ((color as u16) << 8)
             } else {
                 (prev & 0xFF00) | (color as u16)
             };
 
-            ptr::write_volatile(addr, value);
+            addr.write_volatile(value);
         }
     }
 }

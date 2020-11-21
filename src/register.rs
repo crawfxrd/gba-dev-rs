@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use core::marker::PhantomData;
-use core::ptr;
 
 pub struct ReadOnly;
 pub struct ReadWrite;
@@ -24,26 +23,26 @@ impl<WIDTH, MODE> Register<WIDTH, MODE> {
 
 impl<WIDTH> Register<WIDTH, ReadOnly> {
     pub fn read(&self) -> WIDTH {
-        unsafe { ptr::read_volatile(self.address) }
+        unsafe { self.address.read_volatile() }
     }
 }
 
 impl<WIDTH> Register<WIDTH, WriteOnly> {
     pub fn write(&self, value: WIDTH) {
         unsafe {
-            ptr::write_volatile(self.address, value);
+            self.address.write_volatile(value);
         }
     }
 }
 
 impl<WIDTH> Register<WIDTH, ReadWrite> {
     pub fn read(&self) -> WIDTH {
-        unsafe { ptr::read_volatile(self.address) }
+        unsafe { self.address.read_volatile() }
     }
 
     pub fn write(&self, value: WIDTH) {
         unsafe {
-            ptr::write_volatile(self.address, value);
+            self.address.write_volatile(value);
         }
     }
 }

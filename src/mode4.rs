@@ -11,7 +11,7 @@ const SELECT_FRAME: u16 = 1 << 4;
 const ENABLE_BG2: u16 = 1 << 10;
 
 pub struct Mode4 {
-    pub vram: *mut u16,
+    vram: *mut u16,
 }
 
 impl Mode4 {
@@ -35,6 +35,10 @@ impl Mode4 {
     pub fn vflip(&mut self) {
         self.vram = (self.vram as usize ^ Self::FRAME_SIZE) as *mut u16;
         DISPCNT.write(DISPCNT.read() ^ SELECT_FRAME);
+    }
+
+    pub unsafe fn write(&self, offset: isize, value: u16) {
+        self.vram.offset(offset).write_volatile(value);
     }
 
     // Set the pixel at (x, y) to the color of the given palette index

@@ -3,7 +3,7 @@
 
 use crate::register::{ReadWrite, Register};
 
-pub const VRAM: *mut u16 = 0x0600_0000 as *mut u16;
+const VRAM: *mut u16 = 0x0600_0000 as *mut u16;
 
 const DISPCNT: Register<u16, ReadWrite> = Register::new(0x0400_0000);
 const MODE4: u16 = 0x4;
@@ -15,13 +15,21 @@ pub struct Mode4 {
 }
 
 impl Mode4 {
-    pub const WIDTH: u32 = 240;
-    pub const HEIGHT: u32 = 160;
-    pub const FRAME_SIZE: usize = 0xA000;
+    const FRAME_SIZE: usize = 0xA000;
+    const HEIGHT: u32 = 160;
+    const WIDTH: u32 = 240;
 
     pub fn new() -> Self {
         DISPCNT.write(MODE4 | ENABLE_BG2);
         Self { vram: VRAM }
+    }
+
+    pub const fn height(&self) -> u32 {
+        Self::HEIGHT
+    }
+
+    pub const fn width(&self) -> u32 {
+        Self::WIDTH
     }
 
     pub fn vflip(&mut self) {

@@ -72,7 +72,7 @@ fn draw_copyright_symbol(display: &Mode4) {
     ];
 
     // Offset to put it in the bottom left corner
-    let pos = (Mode4::WIDTH * (Mode4::HEIGHT - 8) / 2) as isize;
+    let pos = (display.width() * (display.height() - 8) / 2) as isize;
 
     for i in (0..32).step_by(4) {
         unsafe {
@@ -99,9 +99,9 @@ impl Pixel {
         display.draw_index(self.x, self.y, self.color);
     }
 
-    fn update(&mut self, input: &Input) {
+    fn update(&mut self, display: &Mode4, input: &Input) {
         if input.key_is_down(Key::Right) {
-            if self.x < Mode4::WIDTH - 1 {
+            if self.x < display.width() - 1 {
                 self.x += 1;
             }
         }
@@ -117,14 +117,14 @@ impl Pixel {
             }
         }
         if input.key_is_down(Key::Down) {
-            if self.y < Mode4::HEIGHT - 1 {
+            if self.y < display.height() - 1 {
                 self.y += 1;
             }
         }
 
         if input.key_down(Key::Start) {
-            self.x = Mode4::WIDTH / 2;
-            self.y = Mode4::HEIGHT / 2;
+            self.x = display.width() / 2;
+            self.y = display.height() / 2;
         }
 
         if input.key_down(Key::A) {
@@ -161,7 +161,7 @@ pub extern "C" fn main() -> ! {
     set_palette();
 
     let mut input = Input::new();
-    let mut pxl = Pixel::new(Mode4::WIDTH / 2, Mode4::HEIGHT / 2, 9);
+    let mut pxl = Pixel::new(display.width() / 2, display.height() / 2, 9);
 
     loop {
         vsync();
@@ -174,7 +174,7 @@ pub extern "C" fn main() -> ! {
 
         draw_copyright_symbol(&display);
 
-        pxl.update(&input);
+        pxl.update(&display, &input);
         pxl.render(&display);
     }
 }

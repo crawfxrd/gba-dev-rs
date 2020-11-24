@@ -9,6 +9,10 @@ keywords = ["gameboy", "gba"]
 categories = ["embedded", "games"]
 publish = false
 
+[features]
+default = ["logging"]
+logging = []
+
 [profile.release]
 codegen-units = 1
 lto = true

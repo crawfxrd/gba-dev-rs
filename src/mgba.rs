@@ -15,6 +15,7 @@ pub enum Level {
     Debug = 4,
 }
 
+#[cfg(feature = "logging")]
 pub fn enable() -> bool {
     MGBA_DEBUG_ENABLE.write(0xC0DE);
     enabled()
@@ -24,6 +25,7 @@ fn enabled() -> bool {
     MGBA_DEBUG_ENABLE.read() == 0x1DEA
 }
 
+#[cfg(feature = "logging")]
 pub fn log(level: Level, msg: &str) {
     for (i, &b) in msg.as_bytes().iter().enumerate() {
         // mGBA reserves 0x100 bytes for the debug string
@@ -41,4 +43,13 @@ pub fn log(level: Level, msg: &str) {
 
 fn flush(level: Level) {
     MGBA_DEBUG_FLAGS.write(0x0100 | level as u16);
+}
+
+#[cfg(not(feature = "logging"))]
+pub fn enable() -> bool {
+    false
+}
+
+#[cfg(not(feature = "logging"))]
+pub fn log(_: Level, _: &str) {
 }

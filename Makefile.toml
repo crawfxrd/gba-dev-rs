@@ -2,7 +2,8 @@
 # SPDX-License-Identifier: CC0-1.0
 
 [env]
-TARGET = "./target/thumbv4t-none-eabi/release/untitled"
+PROJECT_TARGET = "./target/thumbv4t-none-eabi/release/untitled"
+PROJECT_CARGO_FEATURES = { source = "${CARGO_MAKE_PROFILE}", mapping = { "development" = "--release", "production" = "--release --no-default-features" } }
 
 [tasks.default]
 alias = "rom"
@@ -17,12 +18,12 @@ args = ["build"]
 
 [tasks.release]
 command = "cargo"
-args = ["build", "--release"]
+args = ["build", "@@split(PROJECT_CARGO_FEATURES, )"]
 
 [tasks.rom]
 dependencies = ["release"]
 command = "arm-none-eabi-objcopy"
-args = ["-O", "binary", "${TARGET}", "./target/untitled.gba"]
+args = ["-O", "binary", "${PROJECT_TARGET}", "./target/untitled.gba"]
 
 [tasks.run]
 dependencies = ["rom"]
@@ -32,9 +33,9 @@ args = ["run", "--release", "--", "${@}"]
 [tasks.objdump]
 dependencies = ["release"]
 command = "arm-none-eabi-objdump"
-args = ["-x", "${TARGET}"]
+args = ["-x", "${PROJECT_TARGET}"]
 
 [tasks.readelf]
 dependencies = ["release"]
 command = "readelf"
-args = ["-a", "${TARGET}"]
+args = ["-a", "${PROJECT_TARGET}"]

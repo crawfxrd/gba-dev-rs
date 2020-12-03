@@ -143,7 +143,6 @@ impl Pixel {
     }
 }
 
-// XXX: Is it safe to call Rust from asm?
 #[no_mangle]
 pub extern "C" fn main() -> ! {
     mgba::enable();

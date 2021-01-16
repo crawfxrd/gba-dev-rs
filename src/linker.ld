@@ -1,5 +1,6 @@
 /* SPDX-FileCopyrightText: NONE */
 /* SPDX-License-Identifier: CC0-1.0 */
+
 /*
  * https://sourceware.org/binutils/docs/ld/Scripts.html
  */
@@ -8,28 +9,12 @@ OUTPUT_FORMAT("elf32-littlearm")
 OUTPUT_ARCH(arm)
 ENTRY(_start)
 
-/*
- * Memory map for ARM7TDMI
- */
 MEMORY
 {
-    EWRAM : ORIGIN = 0x02000000, LENGTH = 256K
-    IWRAM : ORIGIN = 0x03000000, LENGTH = 32K
-    ROM   : ORIGIN = 0x08000000, LENGTH = 32M
+    ewram : ORIGIN = 0x02000000, LENGTH = 256K
+    iwram : ORIGIN = 0x03000000, LENGTH = 32K
+    rom   : ORIGIN = 0x08000000, LENGTH = 32M
 }
-
-/*
- * section [address] [(type)] :
- *   [AT(lma)]
- *   [ALIGN(section_align) | ALIGN_WITH_INPUT]
- *   [SUBALIGN(subsection_align)]
- *   [constraint]
- *   {
- *     output-section-command
- *     output-section-command
- *     ...
- *   } [>region] [AT>lma_region] [:phdr :phdr …] [=fillexp] [,]
- */
 
 SECTIONS
 {
@@ -37,26 +22,25 @@ SECTIONS
     {
         KEEP(*(.text.entry))
         *(.text .text.*)
-    } > ROM
+    } > rom
 
     .rodata : ALIGN(4)
     {
         *(.rodata .rodata.*)
-    } > ROM
+    } > rom
 
     .data : ALIGN(4)
     {
         *(.data .data.*)
-    } > IWRAM AT > ROM
+    } > iwram AT > rom
 
-    .bss : ALIGN(4)
+    .bss (NOLOAD) : ALIGN(4)
     {
         *(.bss)
-    } > IWRAM
+    } > iwram
 
-    /* TODO: Keep/Discard sections */
     /DISCARD/ :
     {
-      *(.ARM.exidx*)
+      *(.ARM.exidx .ARM.exidx.*)
     }
 }

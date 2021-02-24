@@ -30,7 +30,9 @@ impl Palette {
     const PALETTE: *mut u16 = 0x0500_0000 as *mut u16;
     fn set(index: u8, color: Color) {
         unsafe {
-            Self::PALETTE.offset(index as isize).write_volatile(u16::from(color));
+            Self::PALETTE
+                .offset(index as isize)
+                .write_volatile(u16::from(color));
         }
     }
 }
@@ -51,6 +53,7 @@ fn set_palette() {
 }
 
 fn draw_copyright_symbol(display: &Mode4) {
+    #[rustfmt::skip]
     const COPYRIGHT: [u16; 32] = [
         0x0000, 0x0102, 0x0201, 0x0000,
         0x0100, 0x0000, 0x0000, 0x0001,

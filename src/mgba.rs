@@ -51,5 +51,4 @@ pub fn enable() -> bool {
 }
 
 #[cfg(not(feature = "logging"))]
-pub fn log(_: Level, _: &str) {
-}
+pub fn log(_: Level, _: &str) {}

@@ -68,3 +68,9 @@ impl Mode4 {
         }
     }
 }
+
+impl Default for Mode4 {
+    fn default() -> Self {
+        Self::new()
+    }
+}

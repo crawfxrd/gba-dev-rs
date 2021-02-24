@@ -1,26 +1,18 @@
-// SPDX-FileCopyrightText: 2020 Tim Crawford <crawfxrd@gmail.com>
 // SPDX-License-Identifier: MPL-2.0
+// SPDX-FileCopyrightText: 2021 Tim Crawford <crawfxrd@gmail.com>
 
-#![feature(core_intrinsics)]
-#![feature(asm)]
 #![no_std]
 #![no_main]
-#![deny(warnings)]
-#![allow(dead_code)]
+#![feature(asm)]
+#![feature(core_intrinsics)]
 #![allow(clippy::collapsible_if)]
 #![allow(clippy::missing_safety_doc)]
 
-mod color;
-mod input;
-mod interrupt;
-mod mgba;
-mod mode4;
-mod register;
-
-use crate::color::Color;
-use crate::input::{Input, Key};
-use crate::interrupt::Irq;
-use crate::mode4::*;
+use untitled::color::Color;
+use untitled::input::{Input, Key};
+use untitled::interrupt::{self, Irq};
+use untitled::mgba;
+use untitled::mode4::*;
 
 #[inline]
 fn vsync() {
@@ -31,7 +23,6 @@ fn vsync() {
         );
     }
 }
-
 
 struct Palette;
 

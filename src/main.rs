@@ -76,6 +76,7 @@ fn draw_copyright_symbol(display: &Mode4) {
 
     for i in (0..32).step_by(4) {
         unsafe {
+            #[allow(clippy::identity_op)]
             display.write(pos + (i / 4) * 120 + 0, COPYRIGHT[i as usize]);
             display.write(pos + (i / 4) * 120 + 1, COPYRIGHT[(i + 1) as usize]);
             display.write(pos + (i / 4) * 120 + 2, COPYRIGHT[(i + 2) as usize]);

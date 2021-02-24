@@ -3,8 +3,24 @@ name: CI
 on:
   push:
     branches: [master]
+  pull_request:
 
 jobs:
+  lint:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install ARM tools
+        run: sudo apt-get update; sudo apt-get install --no-install-recommends --assume-yes binutils-arm-none-eabi gcc-arm-none-eabi
+
+      - name: Setup Rust toolchain
+        run: rustup show
+
+      - uses: actions-rs/clippy-check@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
   build:
     runs-on: ubuntu-20.04
     steps:

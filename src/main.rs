@@ -3,7 +3,6 @@
 
 #![no_std]
 #![no_main]
-#![feature(asm)]
 #![feature(core_intrinsics)]
 #![allow(clippy::collapsible_if)]
 #![allow(clippy::missing_safety_doc)]
@@ -13,16 +12,6 @@ use untitled::input::{Input, Key};
 use untitled::interrupt::{self, Irq};
 use untitled::mgba;
 use untitled::mode4::*;
-
-#[inline]
-fn vsync() {
-    unsafe {
-        asm!("svc 0x05",
-            // Clobbers
-            out("r0") _, out("r1") _
-        );
-    }
-}
 
 struct Palette;
 
@@ -158,7 +147,7 @@ pub extern "C" fn main() -> ! {
     let mut pxl = Pixel::new(display.width() / 2, display.height() / 2, 9);
 
     loop {
-        vsync();
+        untitled::vsync();
         input.poll();
 
         // XXX: Background not redrawn on new frame. Fill current pixel with

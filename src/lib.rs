@@ -2,6 +2,7 @@
 // SPDX-FileCopyrightText: 2021 Tim Crawford <crawfxrd@gmail.com>
 
 #![no_std]
+#![feature(asm)]
 #![deny(warnings)]
 #![allow(dead_code)]
 #![allow(clippy::collapsible_if)]
@@ -13,3 +14,13 @@ pub mod interrupt;
 pub mod mgba;
 pub mod mode4;
 pub mod register;
+
+#[inline]
+pub fn vsync() {
+    unsafe {
+        asm!("svc 0x05",
+            // Clobbers
+            out("r0") _, out("r1") _
+        );
+    }
+}

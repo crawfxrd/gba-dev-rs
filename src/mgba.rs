@@ -3,8 +3,8 @@
 
 use crate::register::{ReadWrite, Register, WriteOnly};
 
-const MGBA_DEBUG_FLAGS: Register<u16, WriteOnly> = unsafe { Register::new(0x04FF_F700) };
-const MGBA_DEBUG_ENABLE: Register<u16, ReadWrite> = unsafe { Register::new(0x04FF_F780) };
+const MGBA_DEBUG_FLAGS: Register<u16, WriteOnly, 0x04FF_F700> = unsafe { Register::new() };
+const MGBA_DEBUG_ENABLE: Register<u16, ReadWrite, 0x04FF_F780> = unsafe { Register::new() };
 const MGBA_DEBUG_STRING: *mut u8 = 0x04FF_F600 as *mut u8;
 
 pub enum Level {

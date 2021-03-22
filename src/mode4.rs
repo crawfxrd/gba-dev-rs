@@ -5,7 +5,7 @@ use crate::register::{ReadWrite, Register};
 
 const VRAM: *mut u16 = 0x0600_0000 as *mut u16;
 
-const DISPCNT: Register<u16, ReadWrite> = unsafe { Register::new(0x0400_0000) };
+const DISPCNT: Register<u16, ReadWrite, 0x0400_0000> = unsafe { Register::new() };
 const MODE4: u16 = 0x4;
 const SELECT_FRAME: u16 = 1 << 4;
 const ENABLE_BG2: u16 = 1 << 10;

@@ -3,10 +3,10 @@
 
 use crate::register::{ReadWrite, Register};
 
-const IRQ_HANDLER: Register<IrqHandler, ReadWrite> = Register::new(0x0300_7FFC);
-const DISPSTAT: Register<u16, ReadWrite> = Register::new(0x0400_0004);
-const IE: Register<u16, ReadWrite> = Register::new(0x0400_0200);
-const IME: Register<u16, ReadWrite> = Register::new(0x0400_0208);
+const IRQ_HANDLER: Register<IrqHandler, ReadWrite> = unsafe { Register::new(0x0300_7FFC) };
+const DISPSTAT: Register<u16, ReadWrite> = unsafe { Register::new(0x0400_0004) };
+const IE: Register<u16, ReadWrite> = unsafe { Register::new(0x0400_0200) };
+const IME: Register<u16, ReadWrite> = unsafe { Register::new(0x0400_0208) };
 
 pub type IrqHandler = unsafe extern "C" fn();
 

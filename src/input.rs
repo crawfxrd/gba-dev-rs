@@ -24,7 +24,7 @@ pub struct Input {
 }
 
 impl Input {
-    const KEYINPUT: Register<u16, ReadOnly> = Register::new(0x0400_0130);
+    const KEYINPUT: Register<u16, ReadOnly> = unsafe { Register::new(0x0400_0130) };
     const KEY_MASK: u16 = 0b0000_0011_1111_1111;
 
     pub const fn new() -> Self {

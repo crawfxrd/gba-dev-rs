@@ -13,7 +13,7 @@ pub struct Register<WIDTH, MODE> {
 }
 
 impl<WIDTH, MODE> Register<WIDTH, MODE> {
-    pub const fn new(address: u32) -> Self {
+    pub const unsafe fn new(address: u32) -> Self {
         Self {
             address: address as *mut WIDTH,
             mode: PhantomData,

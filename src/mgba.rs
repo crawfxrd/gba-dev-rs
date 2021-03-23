@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2020 Tim Crawford <crawfxrd@gmail.com>
+// SPDX-FileCopyrightText: 2021 Tim Crawford <crawfxrd@gmail.com>
 // SPDX-License-Identifier: MPL-2.0
 
 use crate::register::{ReadWrite, Register, WriteOnly};
@@ -52,3 +52,10 @@ pub fn enable() -> bool {
 
 #[cfg(not(feature = "logging"))]
 pub fn log(_: Level, _: &str) {}
+
+#[macro_export]
+macro_rules! info {
+    ($($arg:tt)*) => ({
+        $crate::mgba::log($crate::mgba::Level::Info, ($($arg)*));
+    })
+}

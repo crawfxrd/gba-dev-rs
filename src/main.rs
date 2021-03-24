@@ -3,7 +3,6 @@
 
 #![no_std]
 #![no_main]
-#![feature(core_intrinsics)]
 #![allow(clippy::collapsible_if)]
 #![allow(clippy::missing_safety_doc)]
 
@@ -165,6 +164,6 @@ pub extern "C" fn main() -> ! {
 
 #[panic_handler]
 fn panic(_info: &core::panic::PanicInfo) -> ! {
-    // XXX: Marked safe by rust-lang/rust#72204
-    core::intrinsics::abort();
+    untitled::stop();
+    loop {}
 }

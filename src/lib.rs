@@ -24,3 +24,10 @@ pub fn vsync() {
         );
     }
 }
+
+#[inline]
+pub fn stop() {
+    unsafe {
+        asm!("svc 0x03");
+    }
+}

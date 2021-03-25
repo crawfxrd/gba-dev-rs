@@ -164,6 +164,8 @@ pub extern "C" fn main() -> ! {
 
 #[panic_handler]
 fn panic(_info: &core::panic::PanicInfo) -> ! {
-    untitled::stop();
-    loop {}
+    interrupt::reset();
+    loop {
+        untitled::stop();
+    }
 }

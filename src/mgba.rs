@@ -1,7 +1,8 @@
-// SPDX-FileCopyrightText: 2021 Tim Crawford <crawfxrd@gmail.com>
 // SPDX-License-Identifier: MPL-2.0
+// SPDX-FileCopyrightText: 2021 Tim Crawford <crawfxrd@gmail.com>
 
 use crate::register::{ReadWrite, Register, WriteOnly};
+use core::fmt;
 
 const MGBA_DEBUG_FLAGS: Register<u16, WriteOnly, 0x04FF_F700> = unsafe { Register::new() };
 const MGBA_DEBUG_ENABLE: Register<u16, ReadWrite, 0x04FF_F780> = unsafe { Register::new() };
@@ -26,18 +27,9 @@ fn enabled() -> bool {
 }
 
 #[cfg(feature = "logging")]
-pub fn log(level: Level, msg: &str) {
-    for (i, &b) in msg.as_bytes().iter().enumerate() {
-        // mGBA reserves 0x100 bytes for the debug string
-        if i >= 0x100 {
-            break;
-        }
-
-        unsafe {
-            MGBA_DEBUG_STRING.add(i).write_volatile(b);
-        }
-    }
-
+pub fn log(level: Level, args: fmt::Arguments) {
+    let mut b = Buffer::new();
+    let _ = fmt::write(&mut b, args);
     flush(level);
 }
 
@@ -51,11 +43,47 @@ pub fn enable() -> bool {
 }
 
 #[cfg(not(feature = "logging"))]
-pub fn log(_: Level, _: &str) {}
+pub fn log(_: Level, _: fmt::Arguments) {}
+
+struct Buffer {
+    offset: usize,
+}
+
+impl Buffer {
+    fn new() -> Self {
+        Self { offset: 0 }
+    }
+}
+
+impl fmt::Write for Buffer {
+    fn write_str(&mut self, s: &str) -> fmt::Result {
+        for &b in s.as_bytes() {
+            // mGBA reserves 0x100 bytes for the debug string
+            if self.offset >= 0x100 {
+                break;
+            }
+
+            unsafe {
+                MGBA_DEBUG_STRING.add(self.offset).write_volatile(b);
+            }
+
+            self.offset += 1;
+        }
+
+        Ok(())
+    }
+}
 
 #[macro_export]
 macro_rules! info {
     ($($arg:tt)*) => ({
-        $crate::mgba::log($crate::mgba::Level::Info, ($($arg)*));
+        $crate::mgba::log($crate::mgba::Level::Info, format_args!($($arg)*));
+    })
+}
+
+#[macro_export]
+macro_rules! error {
+    ($($arg:tt)*) => ({
+        $crate::mgba::log($crate::mgba::Level::Error, format_args!($($arg)*));
     })
 }

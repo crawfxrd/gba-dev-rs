@@ -84,7 +84,7 @@ impl fmt::Write for Buffer {
     fn write_str(&mut self, s: &str) -> fmt::Result {
         for &b in s.as_bytes() {
             if self.offset >= MGBA_DEBUG_STRING_LEN {
-                break;
+                return Err(fmt::Error);
             }
 
             unsafe {

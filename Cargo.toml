@@ -13,9 +13,16 @@ publish = false
 default = ["logging"]
 logging = []
 
+[profile.dev]
+codegen-units = 1
+opt-level = 1
+panic = "abort"
+
 [profile.release]
 codegen-units = 1
 lto = true
+opt-level = "z"
+panic = "abort"
 
 [build-dependencies]
 cc = "1.0"

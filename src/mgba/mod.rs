@@ -4,6 +4,8 @@
 use crate::register::{ReadWrite, Register, WriteOnly};
 use core::fmt;
 
+mod macros;
+
 const MGBA_DEBUG_FLAGS: Register<u16, WriteOnly, 0x04FF_F700> = unsafe { Register::new() };
 const MGBA_DEBUG_ENABLE: Register<u16, ReadWrite, 0x04FF_F780> = unsafe { Register::new() };
 const MGBA_DEBUG_STRING: *mut u8 = 0x04FF_F600 as *mut u8;
@@ -72,18 +74,4 @@ impl fmt::Write for Buffer {
 
         Ok(())
     }
-}
-
-#[macro_export]
-macro_rules! info {
-    ($($arg:tt)*) => ({
-        $crate::mgba::log($crate::mgba::Level::Info, format_args!($($arg)*));
-    })
-}
-
-#[macro_export]
-macro_rules! error {
-    ($($arg:tt)*) => ({
-        $crate::mgba::log($crate::mgba::Level::Error, format_args!($($arg)*));
-    })
 }

@@ -6,8 +6,6 @@
 #![allow(clippy::collapsible_if)]
 #![allow(clippy::missing_safety_doc)]
 
-use untitled::info;
-
 use untitled::color::Color;
 use untitled::input::{Input, Key};
 use untitled::interrupt::{self, Irq};
@@ -112,16 +110,16 @@ impl Pixel {
         }
 
         if input.key_down(Key::A) {
-            info!("Color = CYAN");
+            mgba::info!("Color = CYAN");
             self.color = 9;
         } else if input.key_down(Key::B) {
-            info!("Color = YELLOW");
+            mgba::info!("Color = YELLOW");
             self.color = 10;
         } else if input.key_down(Key::R) {
-            info!("Color = MAGENTA");
+            mgba::info!("Color = MAGENTA");
             self.color = 8;
         } else if input.key_down(Key::L) {
-            info!("Color = LIGHT_STEEL_BLUE");
+            mgba::info!("Color = LIGHT_STEEL_BLUE");
             self.color = 11;
         }
     }
@@ -129,8 +127,8 @@ impl Pixel {
 
 #[no_mangle]
 pub extern "C" fn main() -> ! {
-    untitled::mgba::enable();
-    info!("Testing mGBA logging");
+    mgba::enable();
+    mgba::info!("Testing mGBA logging");
 
     extern "C" {
         fn master_isr();

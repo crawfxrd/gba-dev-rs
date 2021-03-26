@@ -1,0 +1,12 @@
+[package]
+name = "mgba"
+version = "0.1.0"
+edition = "2018"
+license = "MPL-2.0"
+authors = ["Tim Crawford <crawfxrd@gmail.com>"]
+description = "Logging interface for mGBA"
+keywords = ["gba", "logging"]
+categories = ["embedded", "game-development", "no-std"]
+publish = false
+
+[dependencies]

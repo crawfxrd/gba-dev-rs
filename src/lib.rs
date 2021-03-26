@@ -11,7 +11,6 @@
 pub mod color;
 pub mod input;
 pub mod interrupt;
-pub mod mgba;
 pub mod mode4;
 pub mod register;
 

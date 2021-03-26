@@ -1,13 +1,15 @@
 // SPDX-License-Identifier: MPL-2.0
 // SPDX-FileCopyrightText: 2021 Tim Crawford <crawfxrd@gmail.com>
 
-use crate::register::{ReadWrite, Register, WriteOnly};
+#![no_std]
+#![deny(warnings)]
+
 use core::fmt;
 
 mod macros;
 
-const MGBA_DEBUG_FLAGS: Register<u16, WriteOnly, 0x04FF_F700> = unsafe { Register::new() };
-const MGBA_DEBUG_ENABLE: Register<u16, ReadWrite, 0x04FF_F780> = unsafe { Register::new() };
+const MGBA_DEBUG_FLAGS: *mut u16 = 0x04FF_F700 as *mut u16;
+const MGBA_DEBUG_ENABLE: *mut u16 = 0x04FF_F780 as *mut u16;
 const MGBA_DEBUG_STRING: *mut u8 = 0x04FF_F600 as *mut u8;
 
 pub enum Level {
@@ -18,17 +20,15 @@ pub enum Level {
     Debug = 4,
 }
 
-#[cfg(feature = "logging")]
 pub fn enable() -> bool {
-    MGBA_DEBUG_ENABLE.write(0xC0DE);
+    unsafe { MGBA_DEBUG_ENABLE.write_volatile(0xC0DE); }
     enabled()
 }
 
-fn enabled() -> bool {
-    MGBA_DEBUG_ENABLE.read() == 0x1DEA
+pub fn enabled() -> bool {
+    unsafe { MGBA_DEBUG_ENABLE.read_volatile() == 0x1DEA }
 }
 
-#[cfg(feature = "logging")]
 pub fn log(level: Level, args: fmt::Arguments) {
     let mut b = Buffer::new();
     let _ = fmt::write(&mut b, args);
@@ -36,16 +36,8 @@ pub fn log(level: Level, args: fmt::Arguments) {
 }
 
 fn flush(level: Level) {
-    MGBA_DEBUG_FLAGS.write(0x0100 | level as u16);
+    unsafe { MGBA_DEBUG_FLAGS.write_volatile(0x0100 | level as u16); }
 }
-
-#[cfg(not(feature = "logging"))]
-pub fn enable() -> bool {
-    false
-}
-
-#[cfg(not(feature = "logging"))]
-pub fn log(_: Level, _: fmt::Arguments) {}
 
 struct Buffer {
     offset: usize,

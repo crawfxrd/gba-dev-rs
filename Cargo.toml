@@ -9,10 +9,6 @@ keywords = ["gameboy", "gba"]
 categories = ["embedded", "games"]
 publish = false
 
-[features]
-default = ["logging"]
-logging = []
-
 [profile.dev]
 codegen-units = 1
 opt-level = 1
@@ -28,3 +24,4 @@ panic = "abort"
 cc = "1.0"
 
 [dependencies]
+mgba = { path = "crates/mgba" }

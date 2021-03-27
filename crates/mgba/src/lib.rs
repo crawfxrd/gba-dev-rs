@@ -4,11 +4,27 @@
 //! # mGBA logger
 //!
 //! Provides a mechanism for GBA games to send logs to [mGBA]. This is done by
-//! writing to mGBA-specific [MMIO addresses][mmio], which case the emulator to
-//! output messages on the host.
+//! writing to mGBA-specific [MMIO addresses][mmio], which causes the emulator
+//! to output messages to the host machine.
+//!
+//! Be aware than the static strings will end up in the resulting GBA binary,
+//! taking up valuable ROM space.
+//!
+//! ### Usage
+//!
+//! Call [`enable()`] at the start of your binary to enable logging in mGBA.
+//! Then use the macros to log at whatever level you need.
+//!
+//! ```edition2018
+//! pub extern "C" main() -> {
+//!     mgba::enable();
+//!     mgba::info!("Logging to mGBA from a GBA ROM");
+//! }
+//! ```
 //!
 //! [mGBA]: https://mgba.io/
 //! [mmio]: https://github.com/mgba-emu/mgba/blob/0.8.4/include/mgba/internal/gba/io.h#L157-L159
+//! [`enable()`]: ./fn.enable.html
 
 #![no_std]
 #![deny(warnings)]
@@ -22,7 +38,7 @@ const MGBA_DEBUG_FLAGS: *mut u16 = 0x04FF_F700 as *mut u16;
 
 /// The memory-mapped address for enabling mGBA logging.
 ///
-/// To enable logging, a value of 0xC0DE is written.
+/// To enable logging, write the value 0xC0DE.
 /// To check if logging is enabled, read and check for the value 0x1DEA.
 const MGBA_DEBUG_ENABLE: *mut u16 = 0x04FF_F780 as *mut u16;
 
@@ -37,6 +53,7 @@ const MGBA_DEBUG_SEND: u16 = 1 << 8;
 
 /// mGBA-defined log levels.
 pub enum Level {
+    /// This will cause mGBA to display a dialog window with log message.
     Fatal = 0,
     Error = 1,
     Warn = 2,
@@ -45,6 +62,22 @@ pub enum Level {
 }
 
 /// Enables logging in mGBA.
+///
+/// Returns true if mGBA logging is enabled.
+///
+/// ### Examples
+///
+/// ```edition2018
+/// #![no_std]
+/// #![no_main]
+///
+/// #[no_mangle]
+/// # pub extern "C" fn main() -> ! {
+/// if mgba::enable() {
+///     mgba::info!("mGBA logging enabled");
+/// }
+/// # }
+/// ```
 pub fn enable() -> bool {
     unsafe {
         MGBA_DEBUG_ENABLE.write_volatile(0xC0DE);
@@ -58,6 +91,9 @@ pub fn enabled() -> bool {
 }
 
 /// Sends the log to mGBA to output on the host.
+///
+/// This function should not be called directly. Use the macros instead.
+#[doc(hidden)]
 pub fn log(level: Level, args: fmt::Arguments) {
     let mut b = Buffer::new();
     let _ = fmt::write(&mut b, args);

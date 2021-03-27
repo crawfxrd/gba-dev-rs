@@ -17,9 +17,15 @@ jobs:
       - name: Setup Rust toolchain
         run: rustup show
 
-      - uses: actions-rs/clippy-check@v1
+      - name: Run clippy
+        uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run doc
+        uses: actions-rs/cargo@v1
+        with:
+          command: doc
 
   build:
     runs-on: ubuntu-20.04

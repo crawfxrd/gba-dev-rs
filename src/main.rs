@@ -40,28 +40,27 @@ fn set_palette() {
 }
 
 fn draw_copyright_symbol(display: &Mode4) {
-    #[rustfmt::skip]
-    const COPYRIGHT: [u16; 32] = [
-        0x0000, 0x0102, 0x0201, 0x0000,
-        0x0100, 0x0000, 0x0000, 0x0001,
-        0x0002, 0x0104, 0x0301, 0x0200,
-        0x0001, 0x0001, 0x0000, 0x0100,
-        0x0001, 0x0001, 0x0000, 0x0100,
-        0x0002, 0x0104, 0x0301, 0x0200,
-        0x0100, 0x0000, 0x0000, 0x0001,
-        0x0000, 0x0102, 0x0201, 0x0000,
+    const COPYRIGHT: [[u16; 4]; 8] = [
+        [0x0000, 0x0102, 0x0201, 0x0000],
+        [0x0100, 0x0000, 0x0000, 0x0001],
+        [0x0002, 0x0104, 0x0301, 0x0200],
+        [0x0001, 0x0001, 0x0000, 0x0100],
+        [0x0001, 0x0001, 0x0000, 0x0100],
+        [0x0002, 0x0104, 0x0301, 0x0200],
+        [0x0100, 0x0000, 0x0000, 0x0001],
+        [0x0000, 0x0102, 0x0201, 0x0000],
     ];
 
     // Offset to put it in the bottom left corner
-    let pos = (display.width() * (display.height() - 8) / 2) as isize;
+    let pos = (display.width() * (display.height() - 8) / 2) as usize;
 
-    for i in (0..32).step_by(4) {
+    for (i, row) in COPYRIGHT.iter().enumerate() {
         unsafe {
             #[allow(clippy::identity_op)]
-            display.write(pos + (i / 4) * 120 + 0, COPYRIGHT[i as usize]);
-            display.write(pos + (i / 4) * 120 + 1, COPYRIGHT[(i + 1) as usize]);
-            display.write(pos + (i / 4) * 120 + 2, COPYRIGHT[(i + 2) as usize]);
-            display.write(pos + (i / 4) * 120 + 3, COPYRIGHT[(i + 3) as usize]);
+            display.write((pos + i * 120 + 0) as isize, row[0]);
+            display.write((pos + i * 120 + 1) as isize, row[1]);
+            display.write((pos + i * 120 + 2) as isize, row[2]);
+            display.write((pos + i * 120 + 3) as isize, row[3]);
         }
     }
 }

@@ -57,10 +57,10 @@ fn draw_copyright_symbol(display: &Mode4) {
     for (i, row) in COPYRIGHT.iter().enumerate() {
         unsafe {
             #[allow(clippy::identity_op)]
-            display.write((pos + i * 120 + 0) as isize, row[0]);
-            display.write((pos + i * 120 + 1) as isize, row[1]);
-            display.write((pos + i * 120 + 2) as isize, row[2]);
-            display.write((pos + i * 120 + 3) as isize, row[3]);
+            display.write(pos + i * 120 + 0, row[0]);
+            display.write(pos + i * 120 + 1, row[1]);
+            display.write(pos + i * 120 + 2, row[2]);
+            display.write(pos + i * 120 + 3, row[3]);
         }
     }
 }

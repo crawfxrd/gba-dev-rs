@@ -37,8 +37,8 @@ impl Mode4 {
         DISPCNT.write(DISPCNT.read() ^ SELECT_FRAME);
     }
 
-    pub unsafe fn write(&self, offset: isize, value: u16) {
-        self.vram.offset(offset).write_volatile(value);
+    pub unsafe fn write(&self, offset: usize, value: u16) {
+        self.vram.add(offset).write_volatile(value);
     }
 
     // Set the pixel at (x, y) to the color of the given palette index
@@ -50,11 +50,11 @@ impl Mode4 {
 
         // In mode 4, each pixel is a byte, representing the palette index of
         // the color. However, VRAM must be accessed with u16 or u32.
-        let pos = x + y * Self::WIDTH;
+        let pos = (x + y * Self::WIDTH) as usize;
 
         unsafe {
             // So first determine offset by converting u8 to u16.
-            let addr = self.vram.offset((pos / 2) as isize);
+            let addr = self.vram.add(pos / 2);
 
             // Then set the correct byte of the u16 while preserving the other.
             let prev = addr.read_volatile();

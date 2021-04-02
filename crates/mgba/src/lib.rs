@@ -16,7 +16,7 @@
 //! Then use the macros to log at whatever level you need.
 //!
 //! ```edition2018
-//! pub extern "C" main() -> {
+//! pub extern "C" main() -> ! {
 //!     mgba::enable();
 //!     mgba::info!("Logging to mGBA from a GBA ROM");
 //! }
@@ -68,10 +68,6 @@ pub enum Level {
 /// ### Examples
 ///
 /// ```edition2018
-/// #![no_std]
-/// #![no_main]
-///
-/// #[no_mangle]
 /// # pub extern "C" fn main() -> ! {
 /// if mgba::enable() {
 ///     mgba::info!("mGBA logging enabled");
@@ -86,7 +82,7 @@ pub fn enable() -> bool {
 }
 
 /// Checks if mGBA logging is enabled.
-pub fn enabled() -> bool {
+fn enabled() -> bool {
     unsafe { MGBA_DEBUG_ENABLE.read_volatile() == 0x1DEA }
 }
 

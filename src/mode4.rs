@@ -44,8 +44,8 @@ impl Mode4 {
     // Set the pixel at (x, y) to the color of the given palette index
     pub fn draw_index(&self, x: u32, y: u32, color: u8) {
         if x >= Self::WIDTH || y >= Self::HEIGHT {
-            // TODO: Handle better
-            panic!();
+            // No-op if not visible
+            return;
         }
 
         // In mode 4, each pixel is a byte, representing the palette index of

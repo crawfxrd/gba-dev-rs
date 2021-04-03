@@ -6,6 +6,7 @@
 #![allow(clippy::collapsible_if)]
 #![allow(clippy::missing_safety_doc)]
 
+use untitled::bios;
 use untitled::color::Color;
 use untitled::input::{Input, Key};
 use untitled::interrupt::{self, Irq};
@@ -144,7 +145,7 @@ pub extern "C" fn main() -> ! {
     let mut pxl = Pixel::new(display.width() / 2, display.height() / 2, 9);
 
     loop {
-        untitled::vsync();
+        bios::vblank();
         input.poll();
 
         // XXX: Background not redrawn on new frame. Fill current pixel with
@@ -163,6 +164,6 @@ pub extern "C" fn main() -> ! {
 fn panic(_info: &core::panic::PanicInfo) -> ! {
     interrupt::reset();
     loop {
-        untitled::stop();
+        bios::stop();
     }
 }

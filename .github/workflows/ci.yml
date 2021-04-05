@@ -40,10 +40,8 @@ jobs:
       - name: Setup Rust toolchain
         run: rustup show
 
-      - name: Add bin/ to PATH
-        run: echo ./bin/ >> $GITHUB_PATH
-
-      - name: Build GBA ROM
+      - name: Build release binary
         uses: actions-rs/cargo@v1
         with:
-          command: make
+          command: build
+          args: --release

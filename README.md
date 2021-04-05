@@ -7,11 +7,9 @@ Embedded Rust development targeting the Nintendo Game Boy Advance.
 - [Rust] and Cargo
 - An `arm-none-eabi` GCC toolchain (e.g., [devkitARM])
 - [mGBA] for running the binary
-- [cargo-make] for simplifying the build steps
 
 ```
 sudo dnf -y install arm-none-eabi-gcc-cs arm-none-eabi-newlib
-cargo install cargo-make
 ```
 
 ### Why GCC?
@@ -33,13 +31,7 @@ To make it a GBA ROM file, build in release mode and convert the target from
 ELF to binary.
 
 ```
-cargo make
-```
-
-Or, manually with
-
-```
-cargo build -Zbuild-std=core --release
+cargo build --release
 arm-none-eabi-objcopy -O binary target/thumbv4t-none-eabi/release/untitled target/untitled.gba
 ```
 
@@ -50,7 +42,7 @@ called `mgba-qt`. If the mGBA binary uses a different name (e.g., `mgba`,
 `mgba-sdl`), modify the `runner` value in `.cargo/config`.
 
 ```
-cargo make run -- -3
+cargo run --release -- -3
 ```
 
 ### Debugging
@@ -59,7 +51,7 @@ Run a debug build with a GDB session. mGBA will wait for a connection on the
 localhost port 2345.
 
 ```
-cargo run -Zbuild-std=core -- -g
+cargo run -- -g
 ```
 
 In another window, attach to the session. The file [`.gdbinit`][gdbinit]
@@ -80,7 +72,6 @@ version 2.0. See [LICENSE](./LICENSES/MPL-2.0.txt) for details.
 
 [Rust]: https://www.rust-lang.org/
 [cargo-config]: https://doc.rust-lang.org/cargo/reference/config.html
-[cargo-make]: https://github.com/sagiegurari/cargo-make
 [devkitARM]: https://devkitpro.org/wiki/Getting_Started
 [gdbinit]: https://sourceware.org/gdb/onlinedocs/gdb/gdbinit-man.html
 [mGBA]: https://mgba.io/

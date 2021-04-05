@@ -65,6 +65,12 @@ gdb -q -iex "set auto-load safe-path ."
 Continuing.
 ```
 
+## Resources
+
+- [AGB Programming Manual v1.1][manual]
+- [GBATEK]
+- [TONC]
+
 ## License
 
 This software is made available under the terms of the Mozilla Public License,
@@ -75,3 +81,6 @@ version 2.0. See [LICENSE](./LICENSES/MPL-2.0.txt) for details.
 [devkitARM]: https://devkitpro.org/wiki/Getting_Started
 [gdbinit]: https://sourceware.org/gdb/onlinedocs/gdb/gdbinit-man.html
 [mGBA]: https://mgba.io/
+[manual]: https://archive.org/details/NintendoGbaManualV1.1
+[GBATEK]: https://problemkaputt.de/gbatek.htm
+[TONC]: https://www.coranac.com/tonc/text/toc.htm

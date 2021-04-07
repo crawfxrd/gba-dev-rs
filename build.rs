@@ -10,16 +10,14 @@ fn main() {
         .no_default_flags(true)
         .warnings_into_errors(true)
         .flag("-mcpu=arm7tdmi")
-        .out_dir("target")
         .file("src/entry.S")
-        .compile("entry.o");
+        .compile("entry");
 
     cc::Build::new()
         .compiler("arm-none-eabi-gcc")
         .no_default_flags(true)
         .warnings_into_errors(true)
         .flag("-mcpu=arm7tdmi")
-        .out_dir("target")
         .file("src/interrupt.S")
-        .compile("interrupt.o");
+        .compile("interrupt");
 }

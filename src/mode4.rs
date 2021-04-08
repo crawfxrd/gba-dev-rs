@@ -16,19 +16,19 @@ pub struct Mode4 {
 
 impl Mode4 {
     const FRAME_SIZE: usize = 0xA000;
-    const HEIGHT: u32 = 160;
-    const WIDTH: u32 = 240;
+    const HEIGHT: usize = 160;
+    const WIDTH: usize = 240;
 
     pub fn new() -> Self {
         DISPCNT.write(MODE4 | ENABLE_BG2);
         Self { vram: VRAM }
     }
 
-    pub const fn height(&self) -> u32 {
+    pub const fn height(&self) -> usize {
         Self::HEIGHT
     }
 
-    pub const fn width(&self) -> u32 {
+    pub const fn width(&self) -> usize {
         Self::WIDTH
     }
 
@@ -42,15 +42,15 @@ impl Mode4 {
     }
 
     // Set the pixel at (x, y) to the color of the given palette index
-    pub fn draw_index(&self, x: u32, y: u32, color: u8) {
-        if x >= Self::WIDTH || y >= Self::HEIGHT {
+    pub fn draw_index(&self, x: usize, y: usize, color: u8) {
+        if x >= self.width() || y >= self.height() {
             // No-op if not visible
             return;
         }
 
         // In mode 4, each pixel is a byte, representing the palette index of
         // the color. However, VRAM must be accessed with u16 or u32.
-        let pos = (x + y * Self::WIDTH) as usize;
+        let pos = x + y * self.width();
 
         unsafe {
             // So first determine offset by converting u8 to u16.

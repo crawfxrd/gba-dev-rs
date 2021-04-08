@@ -9,7 +9,7 @@ pub unsafe fn reset() {
 
 /// Reset the specified MMIO and RAM regions.
 #[inline]
-pub unsafe fn reset_ram(flags: u32) {
+pub unsafe fn reset_ram(flags: usize) {
     asm!("svc 0x01",
         in("r0") flags
     );
@@ -33,10 +33,10 @@ pub fn stop() {
 
 /// Stop CPU execution until any specified interrupts to occur.
 #[inline]
-pub fn wait(clear: bool, interrupt_flags: u32, extra_flags: u32) {
+pub fn wait(clear: bool, interrupt_flags: usize, extra_flags: usize) {
     unsafe {
         asm!("svc 0x04",
-            in("r0") clear as u32,
+            in("r0") clear as usize,
             in("r1") interrupt_flags,
             in("r2") extra_flags
         );

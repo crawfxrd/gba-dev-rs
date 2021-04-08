@@ -4,7 +4,6 @@
 #![no_std]
 #![no_main]
 #![allow(clippy::collapsible_if)]
-#![allow(clippy::missing_safety_doc)]
 
 mod mode4;
 
@@ -20,11 +19,9 @@ struct Palette;
 
 impl Palette {
     const PALETTE: *mut u16 = 0x0500_0000 as *mut u16;
-    fn set(index: u8, color: Color) {
+    fn set(index: usize, color: Color) {
         unsafe {
-            Self::PALETTE
-                .offset(index as isize)
-                .write_volatile(u16::from(color));
+            Self::PALETTE.add(index).write_volatile(u16::from(color));
         }
     }
 }
@@ -71,13 +68,13 @@ fn draw_copyright_symbol(display: &Mode4) {
 }
 
 struct Pixel {
-    x: u32,
-    y: u32,
+    x: usize,
+    y: usize,
     color: u8,
 }
 
 impl Pixel {
-    fn new(x: u32, y: u32, color: u8) -> Self {
+    fn new(x: usize, y: usize, color: u8) -> Self {
         Self { x, y, color }
     }
 

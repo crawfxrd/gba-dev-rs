@@ -134,11 +134,7 @@ pub extern "C" fn main() -> ! {
     mgba::enable();
     mgba::info!("Testing mGBA logging");
 
-    extern "C" {
-        fn master_isr();
-    }
-
-    interrupt::init(master_isr);
+    interrupt::init(interrupt::master_isr);
     interrupt::enable(Irq::VBlank);
 
     let mut display = Mode4::new();

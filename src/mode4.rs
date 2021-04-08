@@ -1,7 +1,7 @@
-// SPDX-FileCopyrightText: 2020 Tim Crawford <crawfxrd@gmail.com>
 // SPDX-License-Identifier: MPL-2.0
+// SPDX-FileCopyrightText: 2021 Tim Crawford <crawfxrd@gmail.com>
 
-use crate::register::{ReadWrite, Register};
+use gba::register::{ReadWrite, Register};
 
 const VRAM: *mut u16 = 0x0600_0000 as *mut u16;
 

@@ -6,11 +6,15 @@
 #![allow(clippy::collapsible_if)]
 #![allow(clippy::missing_safety_doc)]
 
-use untitled::bios;
-use untitled::color::Color;
-use untitled::input::{Input, Key};
-use untitled::interrupt::{self, Irq};
-use untitled::mode4::*;
+mod mode4;
+
+use gba::bios;
+use gba::color::Color;
+use gba::input::{Input, Key};
+use gba::interrupt::{self, Irq};
+use mode4::Mode4;
+
+const LIGHT_STEEL_BLUE: Color = Color::new(0x16, 0x18, 0x1B);
 
 struct Palette;
 
@@ -26,7 +30,7 @@ impl Palette {
 }
 
 fn set_palette() {
-    Palette::set(0, Color::BLACK);
+    Palette::set(0, Color::BLACK); // Transparent
     Palette::set(1, Color::WHITE);
     Palette::set(2, Color::new(0x18, 0x19, 0x19));
     Palette::set(3, Color::new(0x0D, 0x10, 0x10));
@@ -37,7 +41,7 @@ fn set_palette() {
     Palette::set(8, Color::MAGENTA);
     Palette::set(9, Color::CYAN);
     Palette::set(10, Color::YELLOW);
-    Palette::set(11, Color::LIGHT_STEEL_BLUE);
+    Palette::set(11, LIGHT_STEEL_BLUE);
 }
 
 fn draw_copyright_symbol(display: &Mode4) {

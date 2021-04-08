@@ -1,5 +1,5 @@
-// SPDX-FileCopyrightText: 2020 Tim Crawford <crawfxrd@gmail.com>
 // SPDX-License-Identifier: MPL-2.0
+// SPDX-FileCopyrightText: 2021 Tim Crawford <crawfxrd@gmail.com>
 
 /// A 15-bit color, with each RGB component represented as 5 bits.
 #[derive(Clone, Copy, PartialEq)]
@@ -7,15 +7,14 @@ pub struct Color(u16);
 
 impl Color {
     pub const BLACK: Color = Color::new(0, 0, 0);
-    pub const BLUE: Color = Color::new(0, 0, 0x1F);
-    pub const CYAN: Color = Color::new(0, 0x1F, 0x1F);
-    pub const GRAY: Color = Color::new(0x08, 0x08, 0x08);
-    pub const GREEN: Color = Color::new(0, 0x1F, 0);
-    pub const LIGHT_GRAY: Color = Color::new(0x1C, 0x1C, 0x1C);
-    pub const LIGHT_STEEL_BLUE: Color = Color::new(0x16, 0x18, 0x1B);
-    pub const MAGENTA: Color = Color::new(0x1F, 0, 0x1F);
-    pub const RED: Color = Color::new(0x1F, 0, 0);
     pub const WHITE: Color = Color::new(0x1F, 0x1F, 0x1F);
+
+    pub const BLUE: Color = Color::new(0, 0, 0x1F);
+    pub const GREEN: Color = Color::new(0, 0x1F, 0);
+    pub const RED: Color = Color::new(0x1F, 0, 0);
+
+    pub const CYAN: Color = Color::new(0, 0x1F, 0x1F);
+    pub const MAGENTA: Color = Color::new(0x1F, 0, 0x1F);
     pub const YELLOW: Color = Color::new(0x1F, 0x1F, 0);
 
     pub const fn new(red: u16, green: u16, blue: u16) -> Self {

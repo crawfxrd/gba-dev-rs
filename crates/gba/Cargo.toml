@@ -1,0 +1,15 @@
+[package]
+name = "gba"
+version = "0.0.1"
+edition = "2018"
+license = "MPL-2.0"
+authors = ["Tim Crawford <crawfxrd@gmail.com>"]
+description = "Library for GBA development"
+keywords = ["gameboy"]
+categories = ["embedded", "game-development", "no-std"]
+publish = false
+
+[build-dependencies]
+cc = "1.0"
+
+[dependencies]

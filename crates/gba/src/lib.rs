@@ -3,14 +3,10 @@
 
 #![no_std]
 #![feature(asm)]
-#![deny(warnings)]
-#![allow(dead_code)]
-#![allow(clippy::collapsible_if)]
 #![allow(clippy::missing_safety_doc)]
 
 pub mod bios;
 pub mod color;
 pub mod input;
 pub mod interrupt;
-pub mod mode4;
 pub mod register;

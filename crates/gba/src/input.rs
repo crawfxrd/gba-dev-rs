@@ -1,5 +1,5 @@
-// SPDX-FileCopyrightText: 2019 Tim Crawford <crawfxrd@gmail.com>
 // SPDX-License-Identifier: MPL-2.0
+// SPDX-FileCopyrightText: 2021 Tim Crawford <crawfxrd@gmail.com>
 
 use crate::register::{ReadOnly, Register};
 

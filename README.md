@@ -16,7 +16,8 @@ sudo dnf -y install arm-none-eabi-gcc-cs arm-none-eabi-newlib
 
 GCC is used for compiling the non-Rust code. Assembly must be used to write the
 ROM header and the master ISR. Any addition ARM functions would also have to be
-written in assembly or C, as Rust cannot mix Thumb and ARM states.
+written in assembly or C, as mixing Thumb and ARM states in Rust is
+[unusably inefficient][instruction_set].
 
 GCC is also required for linking the object files into the final ELF binary.
 `rust-lld` cannot be used for linking because it will emit a `blx` instruction
@@ -84,3 +85,4 @@ version 2.0. See [LICENSE](./LICENSES/MPL-2.0.txt) for details.
 [manual]: https://archive.org/details/NintendoGbaManualV1.1
 [GBATEK]: https://problemkaputt.de/gbatek.htm
 [TONC]: https://www.coranac.com/tonc/text/toc.htm
+[instruction_set]: https://github.com/rust-lang/rust/issues/74727

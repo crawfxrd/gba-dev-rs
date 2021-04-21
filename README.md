@@ -21,7 +21,8 @@ written in assembly or C, as mixing Thumb and ARM states in Rust is
 
 GCC is also required for linking the object files into the final ELF binary.
 `rust-lld` cannot be used for linking because it will emit a `blx` instruction
-for interworking. This instruction is not available in ARMv4T architecture.
+for interworking (Ref: [`arm-blx-v4t.s`]). This instruction is not available on
+ARMv4T.
 
 ## Building
 
@@ -77,6 +78,7 @@ Continuing.
 This software is made available under the terms of the Mozilla Public License,
 version 2.0. See [LICENSE](./LICENSES/MPL-2.0.txt) for details.
 
+
 [Rust]: https://www.rust-lang.org/
 [cargo-config]: https://doc.rust-lang.org/cargo/reference/config.html
 [devkitARM]: https://devkitpro.org/wiki/Getting_Started
@@ -86,3 +88,4 @@ version 2.0. See [LICENSE](./LICENSES/MPL-2.0.txt) for details.
 [GBATEK]: https://problemkaputt.de/gbatek.htm
 [TONC]: https://www.coranac.com/tonc/text/toc.htm
 [instruction_set]: https://github.com/rust-lang/rust/issues/74727
+[`arm-blx-v4t.s`]: https://github.com/rust-lang/llvm-project/blob/ea6bb2615f04d53db11b6a43a14be5c9d1eaebe1/lld/test/ELF/arm-blx-v4t.s

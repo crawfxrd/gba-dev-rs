@@ -15,7 +15,7 @@ jobs:
         run: sudo apt-get update; sudo apt-get install --no-install-recommends --assume-yes binutils-arm-none-eabi gcc-arm-none-eabi
 
       - name: Setup Rust toolchain
-        run: rustup show
+        run: rustup self update; rustup show
 
       - name: Run clippy
         uses: actions-rs/clippy-check@v1
@@ -38,7 +38,7 @@ jobs:
         run: sudo apt-get update; sudo apt-get install --no-install-recommends --assume-yes binutils-arm-none-eabi gcc-arm-none-eabi
 
       - name: Setup Rust toolchain
-        run: rustup show
+        run: rustup self update; rustup show
 
       - name: Build release binary
         uses: actions-rs/cargo@v1

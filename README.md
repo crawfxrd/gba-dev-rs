@@ -8,8 +8,10 @@ Embedded Rust development targeting the Nintendo Game Boy Advance.
 - An `arm-none-eabi` GCC toolchain (e.g., [devkitARM])
 - [mGBA] for running the binary
 
+A script is provided to install the dependencies for Fedora and Ubuntu.
+
 ```
-sudo dnf -y install arm-none-eabi-gcc-cs arm-none-eabi-newlib
+./scripts/deps.sh
 ```
 
 ### Why GCC?

@@ -3,7 +3,10 @@
 
 #![no_std]
 #![no_main]
+#![feature(custom_test_frameworks)]
 #![allow(clippy::collapsible_if)]
+#![test_runner(crate::test_runner)]
+#![reexport_test_harness_main = "test_main"]
 
 mod mode4;
 
@@ -129,6 +132,9 @@ impl Pixel {
 
 #[entry]
 fn main() {
+    #[cfg(test)]
+    test_main();
+
     mgba::enable();
     mgba::info!("Testing mGBA logging");
 
@@ -158,10 +164,59 @@ fn main() {
     }
 }
 
+#[cfg(not(test))]
 #[panic_handler]
 fn panic(_info: &core::panic::PanicInfo) -> ! {
     interrupt::reset();
     loop {
         bios::stop();
     }
+}
+
+#[cfg(test)]
+#[panic_handler]
+fn panic(_info: &core::panic::PanicInfo) -> ! {
+    mgba::info!("\x1B[31mFAILED\x1B[0m");
+    bios::stop();
+    loop {}
+}
+
+pub trait Testable {
+    fn run(&self);
+}
+
+impl<T> Testable for T
+where
+    T: Fn(),
+{
+    fn run(&self) {
+        mgba::info!("test {} ...", core::any::type_name::<T>());
+        self();
+        mgba::info!("\x1B[32mok\x1B[0m");
+    }
+}
+
+#[cfg(test)]
+fn test_runner(tests: &[&dyn Testable]) {
+    if !mgba::enable() {
+        panic!();
+    }
+
+    mgba::info!("running {} tests", tests.len());
+    for test in tests {
+        test.run();
+    }
+    mgba::info!("ran all tests");
+
+    bios::stop();
+}
+
+#[test_case]
+fn test_good() {
+    assert_eq!(1, 1);
+}
+
+#[test_case]
+fn test_bad() {
+    assert_eq!(1, 2);
 }

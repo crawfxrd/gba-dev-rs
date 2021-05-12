@@ -17,13 +17,13 @@ members = [
 [profile.dev]
 codegen-units = 1
 opt-level = 1
-panic = "abort"
+#panic = "abort"        # XXX: https://github.com/rust-lang/cargo/issues/7359
 
 [profile.release]
 codegen-units = 1
 lto = true
 opt-level = "z"
-panic = "abort"
+#panic = "abort"        # XXX: https://github.com/rust-lang/cargo/issues/7359
 
 [dependencies]
 gba = { path = "crates/gba", version = "0" }

@@ -16,6 +16,7 @@ extern "C" {
     pub fn master_isr();
 }
 
+#[rustfmt::skip]
 pub enum Irq {
     VBlank,
     //HBlank,

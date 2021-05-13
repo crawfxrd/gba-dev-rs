@@ -4,10 +4,10 @@
 #![no_std]
 #![no_main]
 
+#[rustfmt::skip]
 mod cyberpunk;
 
-use gba::bios;
-use gba::interrupt;
+use gba::{bios, interrupt};
 
 const DISPCNT: *mut u16 = 0x0400_0000 as *mut u16;
 const VRAM: *mut u16 = 0x0600_0000 as *mut u16;

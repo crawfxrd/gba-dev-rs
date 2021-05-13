@@ -19,6 +19,7 @@ struct Palette;
 
 impl Palette {
     const PALETTE: *mut u16 = 0x0500_0000 as *mut u16;
+
     fn set(index: usize, color: Color) {
         unsafe {
             Self::PALETTE.add(index).write_volatile(u16::from(color));

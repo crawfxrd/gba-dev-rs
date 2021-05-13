@@ -5,6 +5,7 @@
 #[derive(Clone, Copy, PartialEq)]
 pub struct Color(u16);
 
+#[rustfmt::skip]
 impl Color {
     pub const BLACK: Color = Color::new(0, 0, 0);
     pub const WHITE: Color = Color::new(0x1F, 0x1F, 0x1F);

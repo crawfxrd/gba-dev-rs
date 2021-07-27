@@ -71,14 +71,9 @@ Continuing.
 
 ## Resources
 
-- [AGB Programming Manual v1.1][manual]
-- [GBATEK]
-- [TONC]
-
-## License
-
-This software is made available under the terms of the Mozilla Public License,
-version 2.0. See [LICENSE](./LICENSES/MPL-2.0.txt) for details.
+- [AGB Programming Manual v1.1](https://archive.org/details/NintendoGbaManualV1.1)
+- [GBATEK](https://problemkaputt.de/gbatek.htm)
+- [TONC](https://www.coranac.com/tonc/text/toc.htm)
 
 
 [Rust]: https://www.rust-lang.org/
@@ -86,8 +81,5 @@ version 2.0. See [LICENSE](./LICENSES/MPL-2.0.txt) for details.
 [devkitARM]: https://devkitpro.org/wiki/Getting_Started
 [gdbinit]: https://sourceware.org/gdb/onlinedocs/gdb/gdbinit-man.html
 [mGBA]: https://mgba.io/
-[manual]: https://archive.org/details/NintendoGbaManualV1.1
-[GBATEK]: https://problemkaputt.de/gbatek.htm
-[TONC]: https://www.coranac.com/tonc/text/toc.htm
 [instruction_set]: https://github.com/rust-lang/rust/issues/74727
 [`arm-blx-v4t.s`]: https://github.com/rust-lang/llvm-project/blob/ea6bb2615f04d53db11b6a43a14be5c9d1eaebe1/lld/test/ELF/arm-blx-v4t.s

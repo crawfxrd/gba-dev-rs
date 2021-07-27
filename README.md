@@ -1,5 +1,8 @@
 # untitled
 
+[![License](https://img.shields.io/badge/License-MPL--2.0-blue.svg)](./LICENSE.md)
+[![CI](https://github.com/crawfxrd/gba-dev-rs/workflows/CI/badge.svg)](https://github.com/crawfxrd/gba-dev-rs/actions)
+
 Embedded Rust development targeting the Nintendo Game Boy Advance.
 
 ## Dependencies

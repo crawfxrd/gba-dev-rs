@@ -12,14 +12,18 @@ msg() {
 source /etc/os-release
 
 msg ">> Installing system dependencies"
-if [[ "${ID}" = "fedora" ]] || [[ "${ID_LIKE}" = "fedora" ]]; then
+if [[ "${ID}" = "fedora" ]] || [[ "${ID_LIKE}" =~ "fedora" ]]; then
     sudo dnf -y install \
         arm-none-eabi-gcc-cs \
         arm-none-eabi-newlib
-elif [[ "${ID}" = "ubuntu" ]] || [[ "${ID_LIKE}" = "debian" ]]; then
+elif [[ "${ID}" = "ubuntu" ]] || [[ "${ID_LIKE}" =~ "debian" ]]; then
     sudo apt install --no-install-recommends --assume-yes \
         binutils-arm-none-eabi \
         gcc-arm-none-eabi
+elif [[ "${ID}" = "arch" ]] || [[ "${ID_LIKE}" =~ "arch" ]]; then
+    sudo pacman -S --noconfirm \
+        arm-none-eabi-binutils \
+        arm-none-eabi-gcc
 fi
 
 if which rustup &> /dev/null; then

@@ -6,4 +6,3 @@ runner = "mgba-qt"
 
 [unstable]
 build-std = ["core"]
-extra-link-arg = true

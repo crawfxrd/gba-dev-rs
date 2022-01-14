@@ -46,6 +46,6 @@ impl From<Color> for u16 {
 
 impl From<u16> for Color {
     fn from(value: u16) -> Self {
-        Self { 0: value }
+        Self(value)
     }
 }

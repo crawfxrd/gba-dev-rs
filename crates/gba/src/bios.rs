@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MPL-2.0
 // SPDX-FileCopyrightText: 2021 Tim Crawford <crawfxrd@gmail.com>
 
+use core::arch::asm;
+
 /// Reset the device.
 #[inline]
 pub unsafe fn reset() {

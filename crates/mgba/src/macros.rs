@@ -72,7 +72,7 @@ macro_rules! info {
 /// # pub extern "C" fn main() -> ! {
 /// mgba::enable();
 /// let (x, y) = (1400, 80);
-/// mgba::warn!("Position ({}, {}) is outside the map, resetting to default position", x, y);
+/// mgba::warn!("({}, {}) is outside the map, resetting to default", x, y);
 /// # }
 /// ```
 #[macro_export]

@@ -2,7 +2,6 @@
 // SPDX-FileCopyrightText: 2021 Tim Crawford <crawfxrd@gmail.com>
 
 #![no_std]
-#![feature(asm)]
 #![allow(clippy::missing_safety_doc)]
 
 pub mod bios;

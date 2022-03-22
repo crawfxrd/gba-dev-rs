@@ -11,8 +11,8 @@ const IME: Register<u16, ReadWrite, 0x0400_0208> = unsafe { Register::new() };
 
 pub type IrqHandler = unsafe extern "C" fn();
 
-/// Signature for the default master ISR.
 extern "C" {
+    /// Signature for the default master ISR.
     pub fn master_isr();
 }
 

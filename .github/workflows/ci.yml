@@ -15,20 +15,13 @@ jobs:
         run: ./scripts/deps.sh
 
       - name: clippy
-        uses: actions-rs/clippy-check@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+        run: cargo clippy
 
       - name: fmt
-        uses: actions-rs/cargo@v1
-        with:
-          command: fmt
-          args: --all -- --check
+        run: cargo fmt --all -- --check
 
       - name: doc
-        uses: actions-rs/cargo@v1
-        with:
-          command: doc
+        run: cargo doc --no-deps
 
   build:
     runs-on: ubuntu-20.04
@@ -41,7 +34,4 @@ jobs:
         run: ./scripts/deps.sh
 
       - name: Build release binary
-        uses: actions-rs/cargo@v1
-        with:
-          command: build
-          args: --release
+        run: cargo build --release

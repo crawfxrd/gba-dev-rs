@@ -24,7 +24,7 @@ macro_rules! log {
 ///
 /// ### Examples
 ///
-/// ```edition2018
+/// ```rust
 /// # pub extern "C" fn main() -> ! {
 /// mgba::enable();
 /// let x = 42;
@@ -46,7 +46,7 @@ macro_rules! debug {
 ///
 /// ### Examples
 ///
-/// ```edition2018
+/// ```rust
 /// # pub extern "C" fn main() -> ! {
 /// mgba::enable();
 /// let index = 4;
@@ -68,7 +68,7 @@ macro_rules! info {
 ///
 /// ### Examples
 ///
-/// ```edition2018
+/// ```rust
 /// # pub extern "C" fn main() -> ! {
 /// mgba::enable();
 /// let (x, y) = (1400, 80);
@@ -90,7 +90,7 @@ macro_rules! warn {
 ///
 /// ### Examples
 ///
-/// ```edition2018
+/// ```rust
 /// # pub extern "C" fn main() -> ! {
 /// mgba::enable();
 /// let (x, y) = (0x16, 0x06);
@@ -115,7 +115,7 @@ macro_rules! error {
 ///
 /// ### Examples
 ///
-/// ```edition2018
+/// ```rust
 /// # pub extern "C" fn main() -> ! {
 /// mgba::enable();
 /// let errno = 3;

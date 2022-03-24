@@ -15,7 +15,7 @@
 //! Call [`enable()`] at the start of your binary to enable logging in mGBA.
 //! Then use the macros to log at whatever level you need.
 //!
-//! ```edition2018
+//! ```rust
 //! pub extern "C" main() -> ! {
 //!     mgba::enable();
 //!     mgba::info!("Logging to mGBA from a GBA ROM");
@@ -66,7 +66,7 @@ pub enum Level {
 ///
 /// ### Examples
 ///
-/// ```edition2018
+/// ```rust
 /// # pub extern "C" fn main() -> ! {
 /// if mgba::enable() {
 ///     mgba::info!("mGBA logging enabled");

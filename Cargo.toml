@@ -11,8 +11,7 @@ publish = false
 
 [workspace]
 members = [
-    "crates/gba",
-    "crates/mgba",
+    "crates/*",
 ]
 
 [profile.dev]
@@ -27,5 +26,5 @@ opt-level = "z"
 panic = "abort"
 
 [dependencies]
-gba = { path = "crates/gba"}
-mgba = { path = "crates/mgba" }
+gba = { path = "crates/gba", version = "0" }
+mgba = { path = "crates/mgba", version = "0" }

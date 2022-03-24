@@ -4,6 +4,8 @@
 #![no_std]
 #![allow(clippy::missing_safety_doc)]
 
+pub use gba_proc_macros::entry;
+
 pub mod bios;
 pub mod color;
 pub mod input;

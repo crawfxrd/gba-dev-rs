@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MPL-2.0
-// SPDX-FileCopyrightText: 2021 Tim Crawford <crawfxrd@gmail.com>
+// SPDX-FileCopyrightText: 2022 Tim Crawford <crawfxrd@gmail.com>
 
 #![no_std]
 #![no_main]
@@ -7,10 +7,10 @@
 
 mod mode4;
 
-use gba::bios;
 use gba::color::Color;
 use gba::input::{Input, Key};
 use gba::interrupt::{self, Irq};
+use gba::{bios, entry};
 use mode4::Mode4;
 
 const LIGHT_STEEL_BLUE: Color = Color::new(0x16, 0x18, 0x1B);
@@ -127,8 +127,8 @@ impl Pixel {
     }
 }
 
-#[no_mangle]
-pub extern "C" fn main() -> ! {
+#[entry]
+fn main() {
     mgba::enable();
     mgba::info!("Testing mGBA logging");
 

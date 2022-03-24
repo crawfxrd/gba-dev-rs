@@ -157,11 +157,3 @@ fn main() {
         pxl.render(&display);
     }
 }
-
-#[panic_handler]
-fn panic(_info: &core::panic::PanicInfo) -> ! {
-    interrupt::reset();
-    loop {
-        bios::stop();
-    }
-}

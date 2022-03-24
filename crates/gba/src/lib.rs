@@ -11,3 +11,12 @@ pub mod color;
 pub mod input;
 pub mod interrupt;
 pub mod register;
+
+#[doc(hidden)]
+#[panic_handler]
+fn panic(_info: &core::panic::PanicInfo) -> ! {
+    interrupt::reset();
+    loop {
+        bios::stop();
+    }
+}

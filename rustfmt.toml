@@ -1,3 +1,5 @@
+array_width = 80
+chain_width = 100
 condense_wildcard_suffixes = true
 empty_item_single_line = false
 error_on_line_overflow = true
@@ -12,5 +14,8 @@ normalize_comments = true
 normalize_doc_attributes = true
 overflow_delimited_expr = true
 reorder_impl_items = true
-wrap_comments = true
+struct_lit_width = 30
+struct_variant_width = 40
 use_field_init_shorthand = true
+use_small_heuristics = "Off"
+wrap_comments = true

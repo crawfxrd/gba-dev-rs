@@ -1,14 +1,15 @@
-@ SPDX-FileCopyrightText: NONE
 @ SPDX-License-Identifier: CC0-1.0
-@
+@ SPDX-FileCopyrightText: NONE
+
 @ GBA Cartridge Header
-@ Entry point for GBA games.
+@
+@ Entry point for GBA games. The first 192 bytes are the ROM registration data.
 @
 @ Ref: AGB Programming Manual - ROM Registration Data
 @ Ref: https://problemkaputt.de/gbatek.htm#gbacartridgeheader
 
-#define IRQ_MODE    #0x12
-#define SYS_MODE    #0x1F
+#define IRQ_MODE    #0x12       @ Value to select Interrupt mode
+#define SYS_MODE    #0x1F       @ Value to select System mode
 
 #define IRQ_STACK   0x03007FA0  @ BIOS default IRQ stack pointer
 #define USR_STACK   0x03007F00  @ BIOS default user stack pointer
@@ -52,20 +53,20 @@ _start:
     .zero 2                 @ Reserved
 
 .init:
-    @ Initialize stack for IRQ mode
+    @ Initialize the stack for IRQ mode.
     mov r0, IRQ_MODE
     msr CPSR_fc, r0
     ldr sp, =IRQ_STACK
 
-    @ Initialize stack for system mode
+    @ Initialize the stack for system mode.
     mov r0, SYS_MODE
     msr CPSR_fc, r0
     ldr sp, =USR_STACK
-    @ Leave processor in system mode
+    @ Leave the processor in system mode.
 
-    @ GBA ROMs normally set the master ISR here
+    @ GBA ROMs normally set the master ISR here.
 
-    @ Branch to main(), switching to THUMB state
+    @ Branch to main(), switching to THUMB state.
     ldr r1, =main
     mov lr, pc
     bx r1

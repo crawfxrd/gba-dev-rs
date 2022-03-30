@@ -21,7 +21,7 @@ jobs:
         run: cargo fmt --all -- --check
 
       - name: doc
-        run: cargo doc --no-deps
+        run: cargo doc
 
   build:
     runs-on: ubuntu-20.04

@@ -3,6 +3,7 @@
 
 #![no_std]
 #![allow(clippy::missing_safety_doc)]
+#![feature(const_trait_impl)]
 
 pub use gba_proc_macros::entry;
 

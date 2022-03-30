@@ -2,21 +2,22 @@
 // SPDX-FileCopyrightText: 2021 Tim Crawford <crawfxrd@gmail.com>
 
 /// A 15-bit color, with each RGB component represented as 5 bits.
-#[derive(Clone, Copy, PartialEq)]
+#[derive(Debug, Default, Clone, Copy, Eq, PartialEq, Hash)]
+#[repr(transparent)]
 pub struct Color(u16);
 
 #[rustfmt::skip]
 impl Color {
-    pub const BLACK: Color = Color::new(0, 0, 0);
-    pub const WHITE: Color = Color::new(0x1F, 0x1F, 0x1F);
+    pub const BLACK: Self = Self::new(0, 0, 0);
+    pub const WHITE: Self = Self::new(0x1F, 0x1F, 0x1F);
 
-    pub const BLUE: Color = Color::new(0, 0, 0x1F);
-    pub const GREEN: Color = Color::new(0, 0x1F, 0);
-    pub const RED: Color = Color::new(0x1F, 0, 0);
+    pub const BLUE: Self = Self::new(0, 0, 0x1F);
+    pub const GREEN: Self = Self::new(0, 0x1F, 0);
+    pub const RED: Self = Self::new(0x1F, 0, 0);
 
-    pub const CYAN: Color = Color::new(0, 0x1F, 0x1F);
-    pub const MAGENTA: Color = Color::new(0x1F, 0, 0x1F);
-    pub const YELLOW: Color = Color::new(0x1F, 0x1F, 0);
+    pub const CYAN: Self = Self::new(0, 0x1F, 0x1F);
+    pub const MAGENTA: Self = Self::new(0x1F, 0, 0x1F);
+    pub const YELLOW: Self = Self::new(0x1F, 0x1F, 0);
 
     pub const fn new(red: u16, green: u16, blue: u16) -> Self {
         Self((red & 0x1F) | ((green & 0x1F) << 5) | ((blue & 0x1F) << 10))
@@ -38,13 +39,13 @@ impl Color {
     }
 }
 
-impl From<Color> for u16 {
+impl const From<Color> for u16 {
     fn from(color: Color) -> Self {
         color.0
     }
 }
 
-impl From<u16> for Color {
+impl const From<u16> for Color {
     fn from(value: u16) -> Self {
         Self(value)
     }

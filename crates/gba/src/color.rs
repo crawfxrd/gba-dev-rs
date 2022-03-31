@@ -24,18 +24,18 @@ impl Color {
     }
 
     /// The red component of a color.
-    pub const fn red(&self) -> u16 {
-        self.0 & 0x1F
+    pub const fn red(&self) -> Self {
+        Self(self.0 & 0x1F)
     }
 
     /// The green component of a color.
-    pub const fn green(&self) -> u16 {
-        (self.0 >> 5) & 0x1F
+    pub const fn green(&self) -> Self {
+        Self((self.0 >> 5) & 0x1F)
     }
 
     /// The blue component of a color.
-    pub const fn blue(&self) -> u16 {
-        (self.0 >> 10) & 0x1F
+    pub const fn blue(&self) -> Self {
+        Self((self.0 >> 10) & 0x1F)
     }
 }
 

@@ -38,7 +38,7 @@ pub fn stop() {
 pub fn wait(clear: bool, interrupt_flags: usize, extra_flags: usize) {
     unsafe {
         asm!("svc 0x04",
-            in("r0") clear as usize,
+            in("r0") usize::from(clear),
             in("r1") interrupt_flags,
             in("r2") extra_flags
         );

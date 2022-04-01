@@ -55,7 +55,7 @@ fn draw_copyright_symbol(display: &Mode4) {
     ];
 
     // Offset to put it in the bottom left corner
-    let pos = (display.width() * (display.height() - 8) / 2) as usize;
+    let pos = display.width() * (display.height() - 8) / 2;
 
     for (i, row) in COPYRIGHT.iter().enumerate() {
         unsafe {

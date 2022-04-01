@@ -59,9 +59,9 @@ impl Mode4 {
             // Then set the correct byte of the u16 while preserving the other.
             let prev = addr.read_volatile();
             let value = if (pos & 1) == 1 {
-                (prev & 0x00FF) | ((color as u16) << 8)
+                (prev & 0x00FF) | (u16::from(color) << 8)
             } else {
-                (prev & 0xFF00) | (color as u16)
+                (prev & 0xFF00) | u16::from(color)
             };
 
             addr.write_volatile(value);

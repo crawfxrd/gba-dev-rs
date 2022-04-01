@@ -8,7 +8,7 @@
 mod mode4;
 
 use gba::color::Color;
-use gba::input::{Input, Key};
+use gba::input::{Input, Keys};
 use gba::interrupt::{self, Irq};
 use gba::{bios, entry};
 use mode4::Mode4;
@@ -84,43 +84,46 @@ impl Pixel {
     }
 
     fn update(&mut self, display: &Mode4, input: &Input) {
-        if input.key_is_down(Key::Right) {
+        let keys_down = input.keys_down();
+        let keys_pressed = input.keys_pressed();
+
+        if (keys_down & Keys::RIGHT) == Keys::RIGHT {
             if self.x < display.width() - 1 {
                 self.x += 1;
             }
         }
-        if input.key_is_down(Key::Left) {
+        if (keys_down & Keys::LEFT) == Keys::LEFT {
             if self.x > 0 {
                 self.x -= 1;
             }
         }
 
-        if input.key_is_down(Key::Up) {
+        if (keys_down & Keys::UP) == Keys::UP {
             if self.y > 0 {
                 self.y -= 1;
             }
         }
-        if input.key_is_down(Key::Down) {
+        if (keys_down & Keys::DOWN) == Keys::DOWN {
             if self.y < display.height() - 1 {
                 self.y += 1;
             }
         }
 
-        if input.key_down(Key::Start) {
+        if (keys_pressed & Keys::START) == Keys::START {
             self.x = display.width() / 2;
             self.y = display.height() / 2;
         }
 
-        if input.key_down(Key::A) {
+        if (keys_pressed & Keys::A) == Keys::A {
             mgba::info!("Color = CYAN");
             self.color = 9;
-        } else if input.key_down(Key::B) {
+        } else if (keys_pressed & Keys::B) == Keys::B {
             mgba::info!("Color = YELLOW");
             self.color = 10;
-        } else if input.key_down(Key::R) {
+        } else if (keys_pressed & Keys::R) == Keys::R {
             mgba::info!("Color = MAGENTA");
             self.color = 8;
-        } else if input.key_down(Key::L) {
+        } else if (keys_pressed & Keys::L) == Keys::L {
             mgba::info!("Color = LIGHT_STEEL_BLUE");
             self.color = 11;
         }

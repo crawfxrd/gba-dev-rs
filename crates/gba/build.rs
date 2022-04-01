@@ -1,11 +1,14 @@
 // SPDX-FileCopyrightText: NONE
 // SPDX-License-Identifier: CC0-1.0
 
-use std::env;
+use std::{env, fs};
 
 fn main() {
-    let cwd = env::var("CARGO_MANIFEST_DIR").unwrap();
-    println!("cargo:rustc-link-arg-examples=-T{}/linker.ld", cwd);
+    let out = env::var("OUT_DIR").unwrap();
+    fs::copy("gba.ld", format!("{}/gba.ld", out)).unwrap();
+
+    println!("cargo:rustc-link-search={}", out);
+    println!("cargo:rustc-link-arg-examples=-Tgba.ld");
 
     cc::Build::new()
         .compiler("arm-none-eabi-gcc")

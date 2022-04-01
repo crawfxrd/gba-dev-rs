@@ -1,11 +1,18 @@
 // SPDX-FileCopyrightText: NONE
 // SPDX-License-Identifier: CC0-1.0
 
-use std::env;
+use std::{env, fs};
 
 fn main() {
-    let cwd = env::var("CARGO_MANIFEST_DIR").unwrap();
-    println!("cargo:rustc-link-arg=-T{}/src/linker.ld", cwd);
+    let out = env::var("OUT_DIR").unwrap();
+    // TODO: Make using linker scripts suck less.
+    fs::copy("crates/gba/gba.ld", format!("{}/gba.ld", out)).unwrap();
+
+    println!("cargo:rustc-link-search={}", out);
+    println!("cargo:rustc-link-arg=-Tgba.ld");
+
+    let target = env::var("TARGET").unwrap();
     let profile = env::var("PROFILE").unwrap();
-    println!("cargo:rustc-link-arg-bins=-Map=target/{}.map", profile);
+    let name = env::var("CARGO_PKG_NAME").unwrap();
+    println!("cargo:rustc-link-arg-bins=-Map=target/{}/{}/{}.map", target, profile, name);
 }

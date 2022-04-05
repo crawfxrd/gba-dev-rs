@@ -84,46 +84,43 @@ impl Pixel {
     }
 
     fn update(&mut self, display: &Mode4, input: &Input) {
-        let keys_down = input.keys_down();
-        let keys_pressed = input.keys_pressed();
-
-        if (keys_down & Keys::RIGHT) == Keys::RIGHT {
+        if input.pressed(Keys::RIGHT) {
             if self.x < display.width() - 1 {
                 self.x += 1;
             }
         }
-        if (keys_down & Keys::LEFT) == Keys::LEFT {
+        if input.pressed(Keys::LEFT) {
             if self.x > 0 {
                 self.x -= 1;
             }
         }
 
-        if (keys_down & Keys::UP) == Keys::UP {
+        if input.pressed(Keys::UP) {
             if self.y > 0 {
                 self.y -= 1;
             }
         }
-        if (keys_down & Keys::DOWN) == Keys::DOWN {
+        if input.pressed(Keys::DOWN) {
             if self.y < display.height() - 1 {
                 self.y += 1;
             }
         }
 
-        if (keys_pressed & Keys::START) == Keys::START {
+        if input.just_pressed(Keys::START) {
             self.x = display.width() / 2;
             self.y = display.height() / 2;
         }
 
-        if (keys_pressed & Keys::A) == Keys::A {
+        if input.just_pressed(Keys::A) {
             mgba::info!("Color = CYAN");
             self.color = 9;
-        } else if (keys_pressed & Keys::B) == Keys::B {
+        } else if input.just_pressed(Keys::B) {
             mgba::info!("Color = YELLOW");
             self.color = 10;
-        } else if (keys_pressed & Keys::R) == Keys::R {
+        } else if input.just_pressed(Keys::R) {
             mgba::info!("Color = MAGENTA");
             self.color = 8;
-        } else if (keys_pressed & Keys::L) == Keys::L {
+        } else if input.just_pressed(Keys::L) {
             mgba::info!("Color = LIGHT_STEEL_BLUE");
             self.color = 11;
         }
@@ -147,7 +144,7 @@ fn main() {
 
     loop {
         bios::vblank();
-        input.poll();
+        input.update();
 
         // XXX: Background not redrawn on new frame. Fill current pixel with
         // background color to not "streak" when moving.

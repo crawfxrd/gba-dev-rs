@@ -3,6 +3,11 @@
 
 #![no_std]
 #![allow(clippy::missing_safety_doc)]
+#![deny(clippy::borrow_as_ptr)]
+#![deny(clippy::cast_lossless)]
+#![deny(clippy::expect_used)]
+#![deny(clippy::panic)]
+#![deny(clippy::unwrap_used)]
 #![feature(const_trait_impl)]
 
 pub use gba_proc_macros::entry;

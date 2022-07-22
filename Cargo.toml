@@ -3,7 +3,6 @@ name = "untitled"
 version = "0.1.0"
 edition = "2021"
 license = "MPL-2.0"
-authors = ["Tim Crawford <crawfxrd@gmail.com>"]
 description = "Developing for the Nintendo Game Boy Advance with Rust"
 keywords = ["gameboy", "gba"]
 categories = ["embedded", "games"]

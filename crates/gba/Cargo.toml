@@ -3,7 +3,6 @@ name = "gba"
 version = "0.0.1"
 edition = "2021"
 license = "MPL-2.0"
-authors = ["Tim Crawford <crawfxrd@gmail.com>"]
 description = "Library for GBA development"
 repository = "https://github.com/crawfxrd/gba-dev-rs"
 keywords = ["gameboy"]

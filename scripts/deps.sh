@@ -24,7 +24,9 @@ elif [[ "${ID}" = "fedora" ]] || [[ "${ID_LIKE}" =~ "fedora" ]]; then
         arm-none-eabi-newlib \
         curl
 elif [[ "${ID}" = "ubuntu" ]] || [[ "${ID_LIKE}" =~ "debian" ]]; then
-    sudo apt install --no-install-recommends --assume-yes \
+    sudo apt -q update
+    sudo apt -q install \
+        --no-install-recommends --assume-yes \
         binutils-arm-none-eabi \
         curl \
         gcc-arm-none-eabi

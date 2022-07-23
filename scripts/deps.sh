@@ -50,4 +50,7 @@ msg ">> Installing pinned Rust toolchain and components"
 # Rely on the fact that `show` will install the default toolchain.
 rustup show
 
+msg ">> Installing git hooks"
+./scripts/git-hooks.sh
+
 msg "\x1B[32m>> Successfully installed dependencies\n"

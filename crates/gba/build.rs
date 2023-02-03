@@ -5,9 +5,9 @@ use std::{env, fs};
 
 fn main() {
     let out = env::var("OUT_DIR").unwrap();
-    fs::copy("gba.ld", format!("{}/gba.ld", out)).unwrap();
+    fs::copy("gba.ld", format!("{out}/gba.ld")).unwrap();
 
-    println!("cargo:rustc-link-search={}", out);
+    println!("cargo:rustc-link-search={out}");
     println!("cargo:rustc-link-arg-examples=-Tgba.ld");
 
     cc::Build::new()

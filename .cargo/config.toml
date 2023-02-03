@@ -1,6 +1,9 @@
 [build]
 target = "thumbv4t-none-eabi"
 
+[registries.crates-io]
+protocol = "sparse"
+
 [target.thumbv4t-none-eabi]
 runner = "mgba-qt"
 

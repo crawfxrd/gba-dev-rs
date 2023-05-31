@@ -1,37 +1,86 @@
+# SPDX-License-Identifier: CC0-1.0
+# SPDX-FileCopyrightText: NONE
+
 name: CI
 
 on:
   push:
     branches: [main]
   pull_request:
+    branches: [main]
+
+env:
+  CARGO_TERM_COLOR: always
 
 jobs:
-  lint:
+  clippy:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
+    - uses: actions/checkout@v3
+    - uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cargo/bin/
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+          target/
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
-      - name: Install dependencies
-        run: ./scripts/deps.sh
+    - name: Install system dependencies
+      run: ./scripts/deps.sh
 
-      - name: clippy
-        run: cargo clippy
+    - run: cargo fetch --locked
+    - run: cargo clippy -- -D warnings
+      env:
+        CARGO_NET_OFFLINE: 'true'
 
-      - name: fmt
-        run: cargo fmt --all --check
+  doc:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cargo/bin/
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+          target/
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
-      - name: doc
-        run: cargo doc
+    - name: Install system dependencies
+      run: ./scripts/deps.sh
+
+    - run: cargo fetch --locked
+    - run: cargo doc --workspace --no-deps
+
+  fmt:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v3
+    - run: cargo fmt --all --check
 
   build:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
-        with:
-          lfs: true
+    - uses: actions/checkout@v3
+      with:
+        lfs: true
+    - uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cargo/bin/
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+          target/
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
-      - name: Install dependencies
-        run: ./scripts/deps.sh
+    - name: Install system dependencies
+      run: ./scripts/deps.sh
 
-      - name: Build release binary
-        run: cargo build --release
+    - run: cargo fetch --locked
+    - run: cargo build
+      env:
+        CARGO_NET_OFFLINE: 'true'

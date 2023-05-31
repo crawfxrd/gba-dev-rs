@@ -62,19 +62,19 @@ impl Default for Keys {
     }
 }
 
-impl const From<u16> for Keys {
+impl From<u16> for Keys {
     fn from(value: u16) -> Self {
         Self(value & Keys::MASK)
     }
 }
 
-impl const From<Keys> for u16 {
+impl From<Keys> for u16 {
     fn from(value: Keys) -> Self {
         value.0
     }
 }
 
-impl const ops::BitAnd for Keys {
+impl ops::BitAnd for Keys {
     type Output = Self;
 
     fn bitand(self, rhs: Self) -> Self::Output {
@@ -82,7 +82,7 @@ impl const ops::BitAnd for Keys {
     }
 }
 
-impl const ops::BitOr for Keys {
+impl ops::BitOr for Keys {
     type Output = Self;
 
     fn bitor(self, rhs: Self) -> Self::Output {
@@ -90,7 +90,7 @@ impl const ops::BitOr for Keys {
     }
 }
 
-impl const ops::BitXor for Keys {
+impl ops::BitXor for Keys {
     type Output = Self;
 
     fn bitxor(self, rhs: Self) -> Self::Output {
@@ -98,7 +98,7 @@ impl const ops::BitXor for Keys {
     }
 }
 
-impl const ops::Not for Keys {
+impl ops::Not for Keys {
     type Output = Self;
 
     fn not(self) -> Self::Output {

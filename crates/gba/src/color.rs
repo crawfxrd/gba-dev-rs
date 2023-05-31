@@ -39,13 +39,13 @@ impl Color {
     }
 }
 
-impl const From<Color> for u16 {
+impl From<Color> for u16 {
     fn from(color: Color) -> Self {
         color.0
     }
 }
 
-impl const From<u16> for Color {
+impl From<u16> for Color {
     fn from(value: u16) -> Self {
         Self(value)
     }

@@ -32,11 +32,6 @@ ROM header and the master ISR. Any addition ARM functions would also have to be
 written in assembly or C, as mixing Thumb and ARM states in Rust is
 [unusably inefficient][instruction_set].
 
-GCC is also required for linking the object files into the final ELF binary.
-`rust-lld` cannot be used for linking because it will emit a `blx` instruction
-for interworking (Ref: [`arm-blx-v4t.s`]). This instruction is not available on
-ARMv4T.
-
 ## Building
 
 Cargo is [configured][cargo-config] to run with the ARM7TDMI target
@@ -89,5 +84,4 @@ Continuing.
 [gdbinit]: https://sourceware.org/gdb/onlinedocs/gdb/gdbinit-man.html
 [instruction_set]: https://github.com/rust-lang/rust/issues/74727
 [mGBA]: https://mgba.io/
-[`arm-blx-v4t.s`]: https://github.com/rust-lang/llvm-project/blob/ea6bb2615f04d53db11b6a43a14be5c9d1eaebe1/lld/test/ELF/arm-blx-v4t.s
 [`build-std`]: https://doc.rust-lang.org/cargo/reference/unstable.html#build-std

@@ -15,10 +15,11 @@ Any editor that has support for [EditorConfig] may be used.
 
 ## Dependencies
 
-A script is provided to install dependencies.
+Scripts are provided to install dependencies.
 
 ```
-./scripts/deps.sh
+./scripts/install-deps.sh
+./scripts/install-rust.sh
 ```
 
 Additionally, mGBA is required for the `run` target.

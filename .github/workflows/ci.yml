@@ -29,7 +29,9 @@ jobs:
         key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
     - name: Install system dependencies
-      run: ./scripts/deps.sh
+      run: |
+        ./scripts/install-deps.sh
+        ./scripts/install-rust.sh
 
     - run: cargo fetch --locked
     - run: cargo clippy -- -D warnings
@@ -52,7 +54,9 @@ jobs:
         key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
     - name: Install system dependencies
-      run: ./scripts/deps.sh
+      run: |
+        ./scripts/install-deps.sh
+        ./scripts/install-rust.sh
 
     - run: cargo fetch --locked
     - run: cargo doc --workspace --no-deps
@@ -81,7 +85,9 @@ jobs:
         key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
     - name: Install system dependencies
-      run: ./scripts/deps.sh
+      run: |
+        ./scripts/install-deps.sh
+        ./scripts/install-rust.sh
 
     - run: cargo fetch --locked
     - run: cargo build

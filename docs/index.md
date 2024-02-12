@@ -1,5 +1,11 @@
 # Development documentation
 
+untitled is a project for me to learn about both embedded development and game
+development by targeting the Nintendo Game Boy Advance.
+
+This is the project development documentation. It is set up to be used with
+[mdBook], which can generate HTML output for easy navigation.
+
 ## Environment
 
 Linux is the only supported environment. Development is possible on a variety
@@ -78,10 +84,11 @@ Continuing.
 
 [EditorConfig]: https://editorconfig.org/
 [Rust]: https://www.rust-lang.org/
+[`build-std`]: https://doc.rust-lang.org/cargo/reference/unstable.html#build-std
 [cargo-config]: https://doc.rust-lang.org/cargo/reference/config.html
 [channels]: https://rust-lang.github.io/rustup/concepts/channels.html
 [devkitARM]: https://devkitpro.org/wiki/Getting_Started
 [gdbinit]: https://sourceware.org/gdb/onlinedocs/gdb/gdbinit-man.html
 [instruction_set]: https://github.com/rust-lang/rust/issues/74727
 [mGBA]: https://mgba.io/
-[`build-std`]: https://doc.rust-lang.org/cargo/reference/unstable.html#build-std
+[mdBook]: https://github.com/rust-lang/mdBook

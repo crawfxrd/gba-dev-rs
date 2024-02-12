@@ -1,22 +1,18 @@
 # untitled
 
-[![License](https://img.shields.io/badge/License-MPL--2.0-blue.svg)](./LICENSE.md)
-[![CI](https://github.com/crawfxrd/gba-dev-rs/workflows/CI/badge.svg)](https://github.com/crawfxrd/gba-dev-rs/actions)
-
 Embedded Rust development targeting the Nintendo Game Boy Advance.
 
-## Documentation
+## Resources
 
-Development documentation is available in `docs/`. It is set up to be used with
-[mdBook], which can generate HTML output for easy navigation.
+- [Project site](https://github.com/crawfxrd/gba-dev-rs)
+- [Documentation](./docs/index.md)
+- [Issue tracker](https://github.com/crawfxrd/gba-dev-rs/issues)
+
+## License
 
 ```
-mdbook build --open docs/
+SPDX-License-Identifier: MPL-2.0
 ```
 
-## Legal
-
-See [`LICENSE.md`](./LICENSE.md) for details.
-
-
-[mdBook]: https://github.com/rust-lang/mdBook
+This project is made available under the terms of the Mozilla Public License
+version 2.0. See [`MPL-2.0.txt`](./LICENSES/MPL-2.0.txt) for details.

@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: CC0-1.0
+# SPDX-FileCopyrightText: NONE
+
 array_width = 80
 chain_width = 100
 condense_wildcard_suffixes = true
